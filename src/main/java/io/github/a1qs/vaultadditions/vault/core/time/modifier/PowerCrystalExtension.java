@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import java.util.UUID;
 
 public class PowerCrystalExtension extends ClockModifier {
-    public static final SupplierKey<ClockModifier> KEY = SupplierKey.of("power_crystal", ClockModifier.class);
+    public static final SupplierKey<ClockModifier> KEY = SupplierKey.of("power_crystal", ClockModifier.class).with(Version.v1_53, PowerCrystalExtension::new);
     public static final FieldRegistry FIELDS = ClockModifier.FIELDS.merge(new FieldRegistry());
     public static final FieldKey<UUID> VAULT_ID = FieldKey.of("vault_id", UUID.class).with(Version.v1_0, Adapters.UUID, DISK.all()).register(FIELDS);
     public static final FieldKey<Integer> INCREMENT = FieldKey.of("increment", Integer.class).with(Version.v1_0, Adapters.INT_SEGMENTED_7, DISK.all()).register(FIELDS);

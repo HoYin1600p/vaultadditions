@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Mixin(RaidChallengeManager.class)
 public abstract class MixinRaidChallengeManager extends ChallengeManager {
-    @Inject(method = "onTick", at = @At(value = "INVOKE", target = "Liskallia/vault/block/entity/challenge/raid/RaidSpawner;onCompleteWave()V"), remap = false)
+    @Inject(method = "onTick", at = @At(value = "INVOKE", target = "Liskallia/vault/core/vault/challenge/raid/RaidSpawner;onCompleteWave()V"), remap = false)
     public void callWaveCompletedEvent(ServerLevel world, CallbackInfo ci) {
         PlayerList playerList = ServerLifecycleHooks.getCurrentServer().getPlayerList();
         for (UUID uuid : this.players) {
