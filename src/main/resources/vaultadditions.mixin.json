@@ -52,7 +52,8 @@
     "registry.MixinSkillAdapter",
     "registry.MixinVaultModifierTypeRegistry",
     "registry.MixinVaultRegistry",
-    "skillaltarfix.SkillAltarDataMixin"
+    "skillaltarfix.SkillAltarDataMixin",
+    "registry.GearModelRollRaritiesConfigMixin"
   ],
   "refmap": "vaultadditions.mixin-refmap.json",
   "client": [
