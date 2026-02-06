@@ -1,5 +1,7 @@
 package io.github.a1qs.vaultadditions.mixins.armor_effects.sound;
 
+import io.github.a1qs.vaultadditions.init.ModSounds;
+import io.github.a1qs.vaultadditions.util.DateHelper;
 import io.github.a1qs.vaultadditions.util.SoundChoice;
 import io.github.a1qs.vaultadditions.vault.gear.effect.AbilitySoundTransmogEffect;
 import iskallia.vault.init.ModAbilities;
@@ -26,6 +28,27 @@ public class MixinDashAbility extends Ability {
                 player.playNotifySound(sound.event(), SoundSource.PLAYERS, sound.volume(), sound.pitch());
                 ci.cancel();
             }
+        });
+
+        if (!DateHelper.isAprilFools()) return;
+
+        context.getSource().as(ServerPlayer.class).ifPresent(player -> {
+            player.level.playSound(
+                    player,
+                    player.getX(), player.getY(), player.getZ(),
+                    ModSounds.FART.get(),
+                    SoundSource.PLAYERS,
+                    0.5F,
+                    1.0F
+            );
+
+            player.playNotifySound(
+                    ModSounds.FART.get(),
+                    SoundSource.PLAYERS,
+                    0.5F,
+                    1.0F
+            );
+            ci.cancel();
         });
     }
 }

@@ -72,6 +72,10 @@ public class ModBlocks {
                     .strength(-1, 3.6E8F).noOcclusion().requiresCorrectToolForDrops()),
             true);
 
+    public static final RegistryObject<Block> POWER_BLOCK = registerBlock("power_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(-1, 3.6E8F).noOcclusion().requiresCorrectToolForDrops()),
+            true);
 
 
     public static final RegistryObject<Block> CUT_CALCITE_BRICKS = registerBlock("cut_calcite_bricks_mimic",

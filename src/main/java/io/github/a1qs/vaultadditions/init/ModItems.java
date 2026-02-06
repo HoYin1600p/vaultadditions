@@ -46,6 +46,12 @@ public class ModItems {
     public static final RegistryObject<Item> RAID_PLAQUE_BLOCK_ITEM = ITEMS.register("raid_plaque",
             () -> new RaidPlaqueBlockItem(ModBlocks.RAID_PLAQUE.get()));
 
+    public static final RegistryObject<Item> POWER_DUST = ITEMS.register("power_dust",
+            ()->  new Item(new Item.Properties().tab(VaultAdditions.VAULT_ADDITIONS_TAB)));
+
+    public static final RegistryObject<Item> POWER_SHARD = ITEMS.register("power_shard",
+            ()->  new Item(new Item.Properties().tab(VaultAdditions.VAULT_ADDITIONS_TAB)));
+
     public static final RegistryObject<Item> VELVET_BED_ITEM_WHITE = registerBedItem("colored_velvet_bed_white", ModBlocks.VELVET_BED_WHITE);
     public static final RegistryObject<Item> VELVET_BED_ITEM_ORANGE = registerBedItem("colored_velvet_bed_orange", ModBlocks.VELVET_BED_ORANGE);
     public static final RegistryObject<Item> VELVET_BED_ITEM_MAGENTA = registerBedItem("colored_velvet_bed_magenta", ModBlocks.VELVET_BED_MAGENTA);

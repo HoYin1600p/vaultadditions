@@ -97,5 +97,14 @@
         "stream": true
       }
     ]
+  },
+  "fart": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "vaultadditions:abilities/tiger/dash_fart",
+        "stream": true
+      }
+    ]
   }
 }
