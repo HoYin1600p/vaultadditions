@@ -33,10 +33,7 @@ public class TabListNameFormatEvent {
         }
 
         PlayerVaultStats stats = PlayerVaultStatsData.get(player.getLevel()).getVaultStats(player);
-        int vaultLevel = stats.getVaultLevel();
-        if (stats.isPrestige()) {
-            vaultLevel += stats.getPrestigeLevel();
-        }
+        int vaultLevel = stats.getVaultUncappedLevel();
 
         MutableComponent display = new TextComponent("");
         MutableComponent level = new TextComponent(String.valueOf(vaultLevel)).withStyle(ChatFormatting.YELLOW);

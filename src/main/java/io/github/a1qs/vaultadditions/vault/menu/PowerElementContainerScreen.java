@@ -14,7 +14,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PowerElementContainerScreen extends SkillsElementContainerScreen<PowerTree> {
-    public static final int TAB_INDEX = 6;
+    public static final int TAB_INDEX = 7;
 
     public PowerElementContainerScreen(NBTElementContainer<PowerTree> container, Inventory inventory, Component title) {
         super(container, inventory, title, ScreenRenderers.getImmediate());
