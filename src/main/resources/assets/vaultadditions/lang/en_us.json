@@ -59,6 +59,7 @@
   "block.vaultadditions.colored_velvet_bed_green": "Green Velvet Bed",
   "block.vaultadditions.colored_velvet_bed_red": "Red Velvet Bed",
   "block.vaultadditions.colored_velvet_bed_black": "Black Velvet Bed",
+  "block.vaultadditions.power_block": "Power Block",
 
   "block.vaultadditions.enchanted_fire": "Enchanted Fire",
   "block.vaultadditions.fools_gold": "Fools Gold",
@@ -89,6 +90,8 @@
   "item.vaultadditions.colored_velvet_bed_green": "Green Velvet Bed",
   "item.vaultadditions.colored_velvet_bed_red": "Red Velvet Bed",
   "item.vaultadditions.colored_velvet_bed_black": "Black Velvet Bed",
+  "item.vaultadditions.power_dust": "Power Dust",
+  "item.vaultadditions.power_shard": "Power Shard",
 
   "container.vault.power": "Powers",
   "itemGroup.vaultadditions": "VaultAdditions",
