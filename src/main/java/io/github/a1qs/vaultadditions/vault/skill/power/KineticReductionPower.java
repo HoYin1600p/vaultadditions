@@ -3,14 +3,17 @@ package io.github.a1qs.vaultadditions.vault.skill.power;
 import com.google.gson.JsonObject;
 import io.github.a1qs.vaultadditions.VaultAdditions;
 import io.github.a1qs.vaultadditions.data.PlayerPowersData;
+import io.github.a1qs.vaultadditions.init.vault.ModGearAttributes;
 import io.github.a1qs.vaultadditions.vault.menu.PowerTree;
 import iskallia.vault.core.data.adapter.Adapters;
 import iskallia.vault.core.net.BitBuffer;
+import iskallia.vault.gear.attribute.type.VaultGearAttributeTypeMerger;
+import iskallia.vault.snapshot.AttributeSnapshot;
+import iskallia.vault.snapshot.AttributeSnapshotHelper;
 import iskallia.vault.skill.base.LearnableSkill;
 import iskallia.vault.skill.base.Skill;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,6 +74,11 @@ public class KineticReductionPower extends LearnableSkill {
         for (KineticReductionPower power : expertises.getAll(KineticReductionPower.class, Skill::isUnlocked)) {
             damageReduction = power.getDamageReduction();
         }
+
+        AttributeSnapshot snapshot = AttributeSnapshotHelper.getInstance().getSnapshot(player);
+        damageReduction += snapshot.getAttributeValue(ModGearAttributes.KINETIC_DAMAGE_REDUCTION_PERCENT, VaultGearAttributeTypeMerger.floatSum());
+        damageReduction = Math.min(damageReduction, 1.0F);
+
         event.setAmount(event.getAmount() * (1.0F - damageReduction));
     }
 }

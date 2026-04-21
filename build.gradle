@@ -140,41 +140,90 @@ repositories {
     mavenCentral()
 }
 
+def prismModsDir = file('C:/Users/Ethan/AppData/Roaming/PrismLauncher/instances/NewPack Test/minecraft/mods')
+def forgeGradleCacheDir = file("${gradle.gradleUserHomeDir}/caches/forge_gradle/deobf_dependencies")
+
+def parchmentMappedJarPatterns = { String... prefixes ->
+    def mappingSuffixes = [
+            '_mapped_parchment_2022.11.06-1.18.2.jar',
+            '_mapped_parchment_2022.08.07-1.18.2.jar',
+            '_mapped_parchment_1.18.1-2022.03.06-1.18.2.jar'
+    ]
+    def patterns = []
+    prefixes.each { prefix ->
+        mappingSuffixes.each { suffix ->
+            patterns.add("**/${prefix}${suffix}")
+        }
+    }
+    return patterns
+}
+
+def findDependencyJar = { File rootDir, List<String> patterns ->
+    if (!rootDir.exists()) {
+        return null
+    }
+
+    for (String pattern : patterns) {
+        def matches = fileTree(rootDir) {
+            include pattern
+        }.files
+        if (!matches.isEmpty()) {
+            return matches.toList().sort { left, right -> right.name <=> left.name }.first()
+        }
+    }
+
+    return null
+}
+
+def localOrDeobfDependency = { String coords, List<String> cachePatterns = [], List<String> localPatterns = [] ->
+    File cachedJar = findDependencyJar(forgeGradleCacheDir, cachePatterns)
+    if (cachedJar != null) {
+        return files(cachedJar)
+    }
+
+    File localJar = findDependencyJar(prismModsDir, localPatterns.collect { pattern -> "**/${pattern}" })
+    if (localJar != null) {
+        return files(localJar)
+    }
+
+    return fg.deobf(coords)
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf('curse.maven:curios-309927:4985315')
-    implementation fg.deobf('curse.maven:alexs-mobs-426558:3853078')
-    implementation fg.deobf("curse.maven:citadel-331936:3783096")
-    implementation fg.deobf('curse.maven:angel-ring-333396:4641783')
-    implementation fg.deobf('curse.maven:quark-243121:3840125')
-    implementation fg.deobf("curse.maven:autoreglib-250363:3642382")
-    implementation fg.deobf('curse.maven:atomicstrykers-infernal-mobs-227875:4149699')
-    implementation fg.deobf("curse.maven:thermal-foundation-222880:4788649")
-    implementation fg.deobf("curse.maven:cofh-core-69162:4801048")
-    implementation fg.deobf('curse.maven:pehkui-319596:4823461')
-    implementation fg.deobf('curse.maven:ecologics-570463:4171283')
-    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:4428885")
-    implementation fg.deobf("curse.maven:playeranimator-658587:4418152")
-    implementation fg.deobf("curse.maven:cloth-config-348521:5729090")
-    implementation fg.deobf("curse.maven:supplementaries-412082:4548315")
-    implementation fg.deobf("curse.maven:selene-499980:6047192")
-    implementation fg.deobf("curse.maven:mekanism-268560:3875976")
-    implementation fg.deobf("curse.maven:create-328085:5797603")
-    implementation fg.deobf("curse.maven:twigs-496913:3968055")
-    implementation fg.deobf("curse.maven:architects-palette-433862:4957984")
+    implementation localOrDeobfDependency('curse.maven:curios-309927:4985315', parchmentMappedJarPatterns('curios-309927-4985315'), ['curios-forge-1.18.2-*.jar'])
+    implementation localOrDeobfDependency('curse.maven:alexs-mobs-426558:3853078', parchmentMappedJarPatterns('alexs-mobs-426558-3853078'), ['alexsmobs-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:citadel-331936:3783096", parchmentMappedJarPatterns('citadel-331936-3783096'), ['citadel-*.jar'])
+    implementation localOrDeobfDependency('curse.maven:angel-ring-333396:4641783', parchmentMappedJarPatterns('angel-ring-333396-4641783'), ['AngelRing*.jar'])
+    implementation localOrDeobfDependency('curse.maven:quark-243121:3840125', parchmentMappedJarPatterns('quark-243121-3840125'), ['Quark-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:autoreglib-250363:3642382", parchmentMappedJarPatterns('autoreglib-250363-3642382'), ['AutoRegLib-*.jar'])
+    implementation localOrDeobfDependency('curse.maven:atomicstrykers-infernal-mobs-227875:4149699', parchmentMappedJarPatterns('atomicstrykers-infernal-mobs-227875-4149699'))
+    implementation localOrDeobfDependency("curse.maven:thermal-foundation-222880:4788649", parchmentMappedJarPatterns('thermal-foundation-222880-4788649'), ['thermal_foundation-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:cofh-core-69162:4801048", parchmentMappedJarPatterns('cofh-core-69162-4801048'), ['cofh_core-*.jar'])
+    implementation localOrDeobfDependency('curse.maven:pehkui-319596:4823461', parchmentMappedJarPatterns('pehkui-319596-4823461'), ['Pehkui-*.jar'])
+    implementation localOrDeobfDependency('curse.maven:ecologics-570463:4171283', parchmentMappedJarPatterns('ecologics-570463-4171283'), ['ecologics-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:better-combat-by-daedelus-639842:4428885", parchmentMappedJarPatterns('better-combat-by-daedelus-639842-4428885'))
+    implementation localOrDeobfDependency("curse.maven:playeranimator-658587:4418152", parchmentMappedJarPatterns('playeranimator-658587-4418152'))
+    implementation localOrDeobfDependency("curse.maven:cloth-config-348521:5729090", parchmentMappedJarPatterns('cloth-config-348521-5729090'), ['cloth-config-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:supplementaries-412082:4548315", parchmentMappedJarPatterns('supplementaries-412082-4548315'), ['supplementaries-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:selene-499980:6047192", [], ['selene-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:mekanism-268560:3875976", parchmentMappedJarPatterns('mekanism-268560-3875976'), ['Mekanism-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:create-328085:5797603", parchmentMappedJarPatterns('create-328085-5797603'), ['create-1.18.2-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:twigs-496913:3968055", [], ['twigs-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:architects-palette-433862:4957984", [], ['Architects-Palette-*.jar'])
 
-    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:7899291") // 3.21.4.1
-    implementation fg.deobf("curse.maven:vault-hunters-api-1118899:7885720") // 3.21
-    implementation fg.deobf("curse.maven:just-enough-vh-1035310:7318869")
-    implementation fg.deobf("curse.maven:geckolib-388172:4181370")
-    implementation fg.deobf("curse.maven:sophisticated-backpacks-422301:5654080")
-    implementation fg.deobf("curse.maven:sophisticated-core-618298:5296312")
-    implementation fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037775")
+    implementation localOrDeobfDependency("curse.maven:vault-hunters-official-mod-458203:7899291", ['**/vault-hunters-official-mod-458203-*_mapped_parchment_2022.11.06-1.18.2.jar'], ['the_vault-1.18.2-*.jar']) // prefer cached mapped VH jars, fall back to local 3.21 install
+    implementation localOrDeobfDependency("curse.maven:vault-hunters-api-1118899:7885720", ['**/vault-hunters-api-1118899-*_mapped_parchment_2022.11.06-1.18.2.jar'], ['vhapi-*.jar']) // prefer cached mapped VH API jars, fall back to local 3.21 install
+    implementation localOrDeobfDependency("curse.maven:just-enough-vh-1035310:7318869", parchmentMappedJarPatterns('just-enough-vh-1035310-6830728'))
+    implementation localOrDeobfDependency("curse.maven:geckolib-388172:4181370", parchmentMappedJarPatterns('geckolib-388172-4181370'), ['geckolib-forge-1.18-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:sophisticated-backpacks-422301:5654080", [], ['sophisticatedbackpacks-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:sophisticated-core-618298:5296312", [], ['sophisticatedcore-*.jar'])
+    implementation localOrDeobfDependency("curse.maven:ice-and-fire-dragons-264231:5037775", parchmentMappedJarPatterns('ice-and-fire-dragons-264231-5037775'))
 
-    implementation fg.deobf("xyz.iwolfking:woldsvaultsstandalone:0.22")
+    implementation localOrDeobfDependency("xyz.iwolfking:woldsvaultsstandalone:0.22", [], ['woldsvaultsstandalone-0.22*.jar'])
 
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}:api", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])
+    runtimeOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])
 
     compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
 
@@ -195,6 +244,7 @@ mixin {
 }
 
 jar {
+    archiveClassifier.set('')
     manifest {
         attributes([
                 "Specification-Title"     : "${mod_id}",
@@ -208,14 +258,14 @@ jar {
     }
 }
 
-tasks.jarJar.finalizedBy('reobfJarJar')
-
 jar.finalizedBy('reobfJar')
 
 tasks.named('jarJar', Jar).configure {
-    archiveClassifier.set('')
-    archiveBaseName.set(archivesBaseName)
-    archiveVersion.set(version)
+    enabled = false
+}
+
+tasks.matching { it.name == 'reobfJarJar' }.configureEach {
+    enabled = false
 }
 
 tasks.withType(JavaCompile).configureEach {

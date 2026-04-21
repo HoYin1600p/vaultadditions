@@ -3,9 +3,13 @@ package io.github.a1qs.vaultadditions.vault.skill.power;
 import com.google.gson.JsonObject;
 import io.github.a1qs.vaultadditions.VaultAdditions;
 import io.github.a1qs.vaultadditions.data.PlayerPowersData;
+import io.github.a1qs.vaultadditions.init.vault.ModGearAttributes;
 import io.github.a1qs.vaultadditions.vault.menu.PowerTree;
 import iskallia.vault.core.data.adapter.Adapters;
 import iskallia.vault.core.net.BitBuffer;
+import iskallia.vault.gear.attribute.type.VaultGearAttributeTypeMerger;
+import iskallia.vault.snapshot.AttributeSnapshot;
+import iskallia.vault.snapshot.AttributeSnapshotHelper;
 import iskallia.vault.skill.base.LearnableSkill;
 import iskallia.vault.skill.base.Skill;
 import net.minecraft.nbt.CompoundTag;
@@ -69,6 +73,11 @@ public class FallReductionPower extends LearnableSkill {
         for (FallReductionPower power : expertises.getAll(FallReductionPower.class, Skill::isUnlocked)) {
             damageReduction = power.getDamageReduction();
         }
+
+        AttributeSnapshot snapshot = AttributeSnapshotHelper.getInstance().getSnapshot(player);
+        damageReduction += snapshot.getAttributeValue(ModGearAttributes.FALL_DAMAGE_REDUCTION_PERCENT, VaultGearAttributeTypeMerger.floatSum());
+        damageReduction = Math.min(damageReduction, 1.0F);
+
         event.setAmount(event.getAmount() * (1.0F - damageReduction));
     }
 }
