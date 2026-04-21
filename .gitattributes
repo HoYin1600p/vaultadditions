@@ -1,5 +1,34 @@
-# Disable autocrlf on generated files, they always generate with LF
-# Add any extra files or paths here to make git stop saying they
-# are changed when only line endings change.
+# Keep repository text files normalized to LF.
+* text=auto eol=lf
+
+# Preserve CRLF for native Windows scripts.
+*.bat text eol=crlf
+
+# Explicit LF text formats used in this repo.
+*.java text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+*.json text eol=lf
+*.mcmeta text eol=lf
+*.xml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.MF text eol=lf
+*.srg text eol=lf
+*.tsrg text eol=lf
+*.gitignore text eol=lf
+.gitattributes text eol=lf
+gradlew text eol=lf
+
+# Binary assets should never be line-ending normalized.
+*.png binary
+*.ogg binary
+*.jar binary
+*.zip binary
+*.bin binary
+*.class binary
+
+# Generated files are always emitted with LF.
 src/generated/**/.cache/cache text eol=lf
 src/generated/**/*.json text eol=lf

@@ -30,6 +30,18 @@ public class VanillaAttributeArmorTransmogEffect<T> extends AttributeTransmogEff
         this.modifier = new AttributeModifier("Armor Set Effect", value, operation);
     }
 
+    public Attribute getAttribute() {
+        return this.attribute;
+    }
+
+    public AttributeModifier.Operation getOperation() {
+        return this.operation;
+    }
+
+    public double getValue() {
+        return this.value;
+    }
+
     public void apply(Player player) {
         AttributeInstance instance = player.getAttribute(attribute);
         if (instance != null && !instance.hasModifier(modifier)) {

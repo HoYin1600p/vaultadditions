@@ -1,12 +1,17 @@
 package io.github.a1qs.vaultadditions.vault.skill.power;
 
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import io.github.a1qs.vaultadditions.VaultAdditions;
 import io.github.a1qs.vaultadditions.client.vault.ClientPowerData;
 import io.github.a1qs.vaultadditions.events.client.KeybindEvents;
+import io.github.a1qs.vaultadditions.init.vault.ModGearAttributes;
 import io.github.a1qs.vaultadditions.vault.menu.PowerTree;
 import iskallia.vault.core.data.adapter.Adapters;
 import iskallia.vault.core.net.BitBuffer;
+import iskallia.vault.gear.attribute.type.VaultGearAttributeTypeMerger;
+import iskallia.vault.snapshot.AttributeSnapshot;
+import iskallia.vault.snapshot.AttributeSnapshotHelper;
 import iskallia.vault.skill.base.LearnableSkill;
 import iskallia.vault.skill.base.Skill;
 import net.minecraft.nbt.CompoundTag;
@@ -30,9 +35,28 @@ public class AirMobilityPower extends LearnableSkill {
         }
 
         PowerTree tree = ClientPowerData.getPowerTree();
+        float playerBaseSpeed = 0.0F;
+        float playerBaseAirMovement = 0.0F;
         for (AirMobilityPower power : tree.getAll(AirMobilityPower.class, Skill::isUnlocked)) {
-            event.player.setSpeed(power.playerBaseSpeed);
-            event.player.flyingSpeed = power.playerBaseAirMovement;
+            playerBaseSpeed = Math.max(playerBaseSpeed, power.playerBaseSpeed);
+            playerBaseAirMovement = Math.max(playerBaseAirMovement, power.playerBaseAirMovement);
+        }
+
+        AttributeSnapshot snapshot = AttributeSnapshotHelper.getInstance().getSnapshot(event.player);
+        playerBaseSpeed = Math.max(playerBaseSpeed, snapshot.getAttributeValue(ModGearAttributes.AIR_MOBILITY_SPEED, VaultGearAttributeTypeMerger.floatMax()));
+        playerBaseAirMovement = Math.max(playerBaseAirMovement, snapshot.getAttributeValue(ModGearAttributes.AIR_MOBILITY_CONTROL, VaultGearAttributeTypeMerger.floatMax()));
+
+        for (Pair<Float, Float> value : snapshot.getAttributeValueList(ModGearAttributes.AIR_MOBILITY)) {
+            playerBaseSpeed = Math.max(playerBaseSpeed, value.getFirst());
+            playerBaseAirMovement = Math.max(playerBaseAirMovement, value.getSecond());
+        }
+
+        if (playerBaseSpeed > 0.0F) {
+            event.player.setSpeed(playerBaseSpeed);
+        }
+
+        if (playerBaseAirMovement > 0.0F) {
+            event.player.flyingSpeed = playerBaseAirMovement;
         }
     }
 
