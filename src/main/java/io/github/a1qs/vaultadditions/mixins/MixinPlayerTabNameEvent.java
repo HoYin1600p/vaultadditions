@@ -1,6 +1,5 @@
 package io.github.a1qs.vaultadditions.mixins;
 
-import io.github.a1qs.vaultadditions.events.TabListNameFormatEvent;
 import iskallia.vault.event.PlayerTabNameEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
