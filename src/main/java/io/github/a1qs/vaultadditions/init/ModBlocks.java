@@ -74,7 +74,7 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> POWER_BLOCK = registerBlock("power_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(-1, 3.6E8F).noOcclusion().requiresCorrectToolForDrops()),
+                    .strength(1.5F, 1200.0F).noOcclusion().requiresCorrectToolForDrops()),
             true);
 
 
