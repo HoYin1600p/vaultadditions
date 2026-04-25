@@ -1,13 +1,14 @@
 package io.github.a1qs.vaultadditions.mixins.patreon;
 
 import iskallia.vault.config.GearModelRollRaritiesConfig;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -25,14 +26,23 @@ public class MixinGearModelRollRaritiesConfig {
     @Shadow Map<String, List<String>> FOCUS_MODEL_ROLLS;
     @Shadow Map<String, List<String>> MAGNETS_MODEL_ROLLS;
 
+    @Inject(method = "reset", at = @At("TAIL"))
+    private void vaultAdditions$patchReset(CallbackInfo ci) {
+        vaultAdditions$patchRolls();
+    }
+
+    @Inject(method = "getRolls(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", at = @At("HEAD"))
+    private void vaultAdditions$patchStackRolls(ItemStack stack, CallbackInfoReturnable<Map<String, List<String>>> cir) {
+        vaultAdditions$patchRolls();
+    }
+
+    @Inject(method = "getRolls(Lnet/minecraft/world/item/Item;)Ljava/util/Map;", at = @At("HEAD"))
+    private void vaultAdditions$patchItemRolls(Item item, CallbackInfoReturnable<Map<String, List<String>>> cir) {
+        vaultAdditions$patchRolls();
+    }
+
     @Unique
-    private boolean additionaltransmogs$patched = false;
-
-    @Inject(method = "getRolls", at = @At("HEAD"))
-    private void vaultAdditionsEnsurePatched(ItemStack stack, CallbackInfoReturnable<Map<String, List<String>>> cir) {
-        if (additionaltransmogs$patched) return;
-        additionaltransmogs$patched = true;
-
+    private void vaultAdditions$patchRolls() {
         //Armor Rolls
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/hoy");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/hoy_with_grogu");
