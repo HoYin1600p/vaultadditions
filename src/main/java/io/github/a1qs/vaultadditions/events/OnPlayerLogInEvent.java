@@ -7,6 +7,7 @@ import io.github.a1qs.vaultadditions.data.PlayerAdditionalVaultStatData;
 import io.github.a1qs.vaultadditions.data.PlayerPowersData;
 import io.github.a1qs.vaultadditions.init.ModNetwork;
 import io.github.a1qs.vaultadditions.network.EventSyncMessage;
+import io.github.a1qs.vaultadditions.util.LuckPermsHelper;
 import io.github.a1qs.vaultadditions.util.TimeUtil;
 import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.dynamodel.model.armor.ArmorModel;
@@ -24,6 +25,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,13 +55,19 @@ public class OnPlayerLogInEvent {
 
     @SubscribeEvent
     public static void transmogUnlocks(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getPlayer();
-        if (!(player.getLevel() instanceof ServerLevel level)) {
+        if (!(event.getPlayer() instanceof ServerPlayer player)) {
             return;
         }
+        ServerLevel level = player.getLevel();
 
-        List<DynamicModel<?>> models = Configs.TRANSMOG_UNLOCKS.getUnlocks(player);
-        if (models == null) {
+        LinkedHashSet<DynamicModel<?>> models = new LinkedHashSet<>();
+        List<DynamicModel<?>> manualUnlocks = Configs.TRANSMOG_UNLOCKS.getUnlocks(player);
+        if (manualUnlocks != null) {
+            models.addAll(manualUnlocks);
+        }
+        models.addAll(getLuckPermsUnlocks(player));
+
+        if (models.isEmpty()) {
             return;
         }
 
@@ -80,6 +89,14 @@ public class OnPlayerLogInEvent {
                     });
                 }
             }
+        }
+    }
+
+    private static List<DynamicModel<?>> getLuckPermsUnlocks(ServerPlayer player) {
+        try {
+            return Configs.TRANSMOG_ROLE_UNLOCKS.getUnlocks(LuckPermsHelper.getRoleNames(player));
+        } catch (IllegalStateException | NoClassDefFoundError ignored) {
+            return List.of();
         }
     }
 }

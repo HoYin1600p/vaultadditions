@@ -222,6 +222,8 @@ dependencies {
 
     implementation localOrDeobfDependency("xyz.iwolfking:woldsvaultsstandalone:0.22", [], ['woldsvaultsstandalone-0.22*.jar'])
 
+    compileOnly "net.luckperms:api:5.5"
+
     compileOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}:api", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])
     runtimeOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])
 
