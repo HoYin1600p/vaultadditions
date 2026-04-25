@@ -1,17 +1,12 @@
 package io.github.a1qs.vaultadditions.item;
 
 import io.github.a1qs.vaultadditions.block.GlobeExpanderBlock;
-import io.github.a1qs.vaultadditions.client.ClientEventData;
-import io.github.a1qs.vaultadditions.config.ServerConfigs;
 import io.github.a1qs.vaultadditions.data.PlayerAdditionalVaultStatData;
 import io.github.a1qs.vaultadditions.init.ModBlocks;
-import io.github.a1qs.vaultadditions.util.TimeUtil;
 import iskallia.vault.client.gui.overlay.VaultBarOverlay;
 import iskallia.vault.world.data.PlayerVaultStatsData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,24 +38,9 @@ public class PowerCrystal extends Item {
     @Override
     @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
-        int increase = ServerConfigs.POWER_CRYSTAL_INCREASE.get();
-        String append = Math.abs(ServerConfigs.POWER_CRYSTAL_INCREASE.get()) == 1 ? "" : "s";
-        if (ServerConfigs.LIMIT_TIME_FOR_EXPANSION.get()) { // The time for expanding the border is limited to events & the specified timespan
-            if (ClientEventData.isGlobeExpanderRequired()) {
-                tooltip.add(new TextComponent("Temporarily Increases the World Border by ").append(increase + append).withStyle(ChatFormatting.YELLOW).append(" Blocks!"));
-            } else if (!TimeUtil.pastDate()) {
-                tooltip.add(new TextComponent( "Increases the World Border by ").append(increase + append).withStyle(ChatFormatting.YELLOW).append(" Blocks!"));
-            }
-        } else {
-            tooltip.add(new TextComponent("Increases the World Border by ").append(increase + append).withStyle(ChatFormatting.YELLOW).append(" Blocks!"));
-        }
-
         if (VaultBarOverlay.vaultLevel >= 100) {
-            tooltip.add(new TextComponent("Grants a").withStyle(ChatFormatting.YELLOW)
-                    .append(new TextComponent(" Power Point").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(16724414))))
-                    .append(new TextComponent(" upon use with the Globe Expander").withStyle(ChatFormatting.YELLOW))
-            );
-        } else if (tooltip.size() <= 1) {
+            tooltip.add(new TextComponent("Consume to gain one Power Point").withStyle(ChatFormatting.YELLOW));
+        } else {
             tooltip.add(new TextComponent("I seem to be too weak to make use of this...").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.RED));
         }
     }
