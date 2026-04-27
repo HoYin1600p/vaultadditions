@@ -1,6 +1,7 @@
 package io.github.a1qs.vaultadditions.mixins.loot_statue;
 
 import io.github.a1qs.vaultadditions.config.Configs;
+import io.github.a1qs.vaultadditions.util.StatueLootSanitizer;
 import iskallia.vault.block.LootStatueBlock;
 import iskallia.vault.block.LootStatueUpperBlock;
 import iskallia.vault.block.entity.LootStatueTileEntity;
@@ -52,7 +53,7 @@ public class MixinLootStatueBlock {
 
             List<ItemStack> options = Configs.STATUE_LOOT_OMEGA.getOptions();
             for (ItemStack option : options) {
-                itemList.add(option.serializeNBT());
+                itemList.add(StatueLootSanitizer.sanitizeOmegaLoot(option).serializeNBT());
             }
 
             data.put("Items", itemList);
@@ -69,6 +70,11 @@ public class MixinLootStatueBlock {
         }
 
         ItemStack lootItem = be.getLootItem();
+        ItemStack sanitizedLoot = StatueLootSanitizer.sanitizeOmegaLoot(lootItem);
+        if (!ItemStack.isSame(lootItem, sanitizedLoot) || !ItemStack.tagMatches(lootItem, sanitizedLoot) || lootItem.getCount() != sanitizedLoot.getCount()) {
+            be.setLootItem(sanitizedLoot);
+            lootItem = sanitizedLoot;
+        }
         CompoundTag lootTag = lootItem.getTag();
         if (tag.getCompound("BlockEntityTag").contains("LootItem") && lootTag != null) {
             lootTag.remove("Charged");

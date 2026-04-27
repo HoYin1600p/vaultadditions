@@ -2,6 +2,7 @@ package io.github.a1qs.vaultadditions.block.blockentity;
 
 import io.github.a1qs.vaultadditions.config.Configs;
 import io.github.a1qs.vaultadditions.init.ModBlockEntities;
+import io.github.a1qs.vaultadditions.util.StatueLootSanitizer;
 import iskallia.vault.block.entity.SkinnableTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -58,7 +59,7 @@ public class LootStatueBlockEntity extends SkinnableTileEntity {
     }
 
     public void setLootItem(@Nonnull ItemStack stack) {
-        this.lootItem = stack;
+        this.lootItem = StatueLootSanitizer.sanitizeCustomStatueLoot(this.getBlockState(), stack);
         this.setChanged();
         this.sendUpdates();
     }
@@ -141,7 +142,7 @@ public class LootStatueBlockEntity extends SkinnableTileEntity {
         this.totalItems = nbt.getInt("TotalItems");
         this.itemsRemaining = nbt.getInt("ItemsRemaining");
         this.currentTick = nbt.getInt("CurrentTick");
-        this.lootItem = ItemStack.of(nbt.getCompound("LootItem"));
+        this.lootItem = StatueLootSanitizer.sanitizeCustomStatueLoot(this.getBlockState(), ItemStack.of(nbt.getCompound("LootItem")));
     }
 
     @Override
