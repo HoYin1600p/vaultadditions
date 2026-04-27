@@ -3,6 +3,7 @@ package io.github.a1qs.vaultadditions.item;
 
 import io.github.a1qs.vaultadditions.VaultAdditions;
 import io.github.a1qs.vaultadditions.config.Configs;
+import io.github.a1qs.vaultadditions.util.StatueLootSanitizer;
 import iskallia.vault.init.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -72,7 +73,7 @@ public class LootStatueBlockItem extends BlockItem {
         nbt.putString("PlayerNickname", nickname);
 
         if (Configs.STATUE_LOOT_OMEGA != null) {
-            ItemStack loot = Configs.STATUE_LOOT_OMEGA.randomLoot();
+            ItemStack loot = StatueLootSanitizer.sanitizeOmegaLoot(Configs.STATUE_LOOT_OMEGA.randomLoot());
             nbt.put("LootItem", loot.serializeNBT());
         }
 

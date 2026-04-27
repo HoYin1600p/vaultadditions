@@ -6,6 +6,7 @@ import io.github.a1qs.vaultadditions.config.Configs;
 import io.github.a1qs.vaultadditions.container.LootStatueContainer;
 import io.github.a1qs.vaultadditions.container.RenameContainer;
 import io.github.a1qs.vaultadditions.init.ModBlockEntities;
+import io.github.a1qs.vaultadditions.util.StatueLootSanitizer;
 import io.github.a1qs.vaultadditions.util.UsernameProvider;
 import io.github.a1qs.vaultadditions.util.VoxelUtil;
 import iskallia.vault.util.RenameType;
@@ -174,7 +175,7 @@ public class LootStatueBlock extends BaseEntityBlock {
                     }
 
                     for (ItemStack option : options) {
-                        itemList.add(option.serializeNBT());
+                        itemList.add(StatueLootSanitizer.sanitizeCustomStatueLoot(pState, option).serializeNBT());
                     }
 
                     data.put("Items", itemList);
@@ -212,7 +213,7 @@ public class LootStatueBlock extends BaseEntityBlock {
                                 options = Configs.STATUE_LOOT_ARENA.getOptions();
                         default -> options = Configs.STATUE_LOOT_VAULT.getOptions();
                     }
-                    be.setLootItem(options.get(pLevel.random.nextInt(options.size())));
+                    be.setLootItem(StatueLootSanitizer.sanitizeCustomStatueLoot(pState, options.get(pLevel.random.nextInt(options.size()))));
                 }
             }
         }
