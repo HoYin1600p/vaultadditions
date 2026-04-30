@@ -56,7 +56,7 @@ public class SpecialCommands {
                 .requires(sender -> sender.hasPermission(this.getRequiredPermissionLevel()))
                 .then(Commands.argument("ItemId", ResourceLocationArgument.id())
                         .suggests(SUGGEST_STATUES)
-                        .then(Commands.argument("PlayerName", StringArgumentType.string())
+                        .then(Commands.argument("PlayerName", StringArgumentType.greedyString())
                                 .executes(this::grantLootStatue)
                         )
                 )
@@ -86,7 +86,7 @@ public class SpecialCommands {
         writeStatueRedeemLog(player, playerName, itemId);
         VaultAdditions.LOGGER.info("{} has been granted a Loot Statue of type {} with statue_name {}", player.getName().getString(), itemId, playerName);
         context.getSource().sendSuccess(new TextComponent("You've been granted a Loot Statue").withStyle(ChatFormatting.GREEN), true);
-        return 0;
+        return 1;
     }
 
     private static void writeStatueRedeemLog(ServerPlayer executor, String statueName, ResourceLocation itemId) {
