@@ -63,6 +63,7 @@ public abstract class TransmogEffect {
         register(AttributeTransmogEffect.TYPE);
         register(ElytraSoundTransmogEffect.TYPE);
         register(HideElytraTransmogEffect.TYPE);
+        register(StyledAbilityLevelTransmogEffect.TYPE);
         register(StyledTalentLevelTransmogEffect.TYPE);
         register(VanillaAttributeArmorTransmogEffect.TYPE);
     }

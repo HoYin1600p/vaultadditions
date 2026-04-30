@@ -15,6 +15,7 @@ import io.github.a1qs.vaultadditions.vault.gear.effect.AbilitySoundTransmogEffec
 import io.github.a1qs.vaultadditions.vault.gear.effect.AttributeTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.ElytraSoundTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.HideElytraTransmogEffect;
+import io.github.a1qs.vaultadditions.vault.gear.effect.StyledAbilityLevelTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.StyledTalentLevelTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.TransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.VanillaAttributeArmorTransmogEffect;
@@ -24,6 +25,7 @@ import iskallia.vault.gear.attribute.talent.TalentLevelAttribute;
 import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.dynamodel.model.armor.ArmorModel;
 import iskallia.vault.gear.attribute.VaultGearAttributeInstance;
+import iskallia.vault.gear.attribute.ability.AbilityLevelAttribute;
 import iskallia.vault.init.ModAbilities;
 import iskallia.vault.init.ModAttributes;
 import iskallia.vault.init.ModDynamicModels;
@@ -518,11 +520,23 @@ public class TransmogEffectsConfig extends Config {
         List<TransmogEffect> effects = new ArrayList<>(this.effects.getOrDefault(model, List.of()));
         List<TransmogEffect> updatedEffects = new ArrayList<>();
         boolean changed = false;
+        boolean hasDashLevelBonus = false;
         boolean hasKineticReduction = false;
 
         for (TransmogEffect effect : effects) {
             if (isSpaceMarineStrengthBonus(effect) || isSpaceMarineAttackBonus(effect)) {
                 changed = true;
+                continue;
+            }
+
+            if (isAbilityLevelBonus(effect, ModAbilities.DASH, 1)) {
+                hasDashLevelBonus = true;
+                if (!(effect instanceof StyledAbilityLevelTransmogEffect)) {
+                    updatedEffects.add(new StyledAbilityLevelTransmogEffect(VaultGearAttributeHelper.abilityLevel(ModAbilities.DASH, 1), true));
+                    changed = true;
+                } else {
+                    updatedEffects.add(effect);
+                }
                 continue;
             }
 
@@ -533,6 +547,11 @@ public class TransmogEffectsConfig extends Config {
             }
 
             updatedEffects.add(effect);
+        }
+
+        if (!hasDashLevelBonus) {
+            updatedEffects.add(new StyledAbilityLevelTransmogEffect(VaultGearAttributeHelper.abilityLevel(ModAbilities.DASH, 1), true));
+            changed = true;
         }
 
         if (!hasKineticReduction) {
@@ -571,6 +590,20 @@ public class TransmogEffectsConfig extends Config {
         return effect instanceof AttributeTransmogEffect<?> attributeEffect
                 && attributeEffect.getVaultGearAttributeInstance().getAttribute() == ModGearAttributes.DAMAGE_INCREASE
                 && Double.compare(((Number) attributeEffect.getVaultGearAttributeInstance().getValue()).doubleValue(), 0.05F) == 0;
+    }
+
+    private boolean isAbilityLevelBonus(TransmogEffect effect, String abilityId, int levelChange) {
+        if (!(effect instanceof AttributeTransmogEffect<?> attributeEffect)
+                || attributeEffect.getVaultGearAttributeInstance().getAttribute() != ModGearAttributes.ABILITY_LEVEL) {
+            return false;
+        }
+
+        Object value = attributeEffect.getVaultGearAttributeInstance().getValue();
+        if (!(value instanceof AbilityLevelAttribute abilityLevelAttribute)) {
+            return false;
+        }
+
+        return abilityId.equals(abilityLevelAttribute.getAbility()) && abilityLevelAttribute.getLevelChange() == levelChange;
     }
 
     @Override
@@ -631,7 +664,7 @@ public class TransmogEffectsConfig extends Config {
         JsonArray spaceMarineEffects = new JsonArray();
         spaceMarineEffects.add(HideElytraTransmogEffect.TYPE.serialize());
         spaceMarineEffects.add(new AttributeTransmogEffect<>(VaultGearAttributeHelper.abilityManaCostPercentage(ModAbilities.DASH, -0.25F)).serialize());
-        spaceMarineEffects.add(new AttributeTransmogEffect<>(VaultGearAttributeHelper.abilityLevel(ModAbilities.DASH, 1)).serialize());
+        spaceMarineEffects.add(new StyledAbilityLevelTransmogEffect(VaultGearAttributeHelper.abilityLevel(ModAbilities.DASH, 1), true).serialize());
         spaceMarineEffects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(ModGearAttributes.RESISTANCE, 0.1F)).serialize());
         spaceMarineEffects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.KINETIC_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
         spaceMarineEffects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.FALL_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
