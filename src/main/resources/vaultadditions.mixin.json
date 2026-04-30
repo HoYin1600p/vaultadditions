@@ -51,7 +51,8 @@
     "registry.MixinSkillAdapter",
     "registry.MixinVaultModifierTypeRegistry",
     "registry.MixinVaultRegistry",
-    "skillaltarfix.SkillAltarDataMixin"
+    "skillaltarfix.SkillAltarDataMixin",
+    "wither_sound.MixinServerLevel"
   ],
   "refmap": "vaultadditions.mixin-refmap.json",
   "client": [
