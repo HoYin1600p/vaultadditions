@@ -18,6 +18,7 @@ public class CommandEvents {
         new EventCommands(event.getDispatcher());
         new SpecialCommands(event.getDispatcher());
         new DebugCommands(event.getDispatcher());
+        new WitherGlobalSoundCommands(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }
