@@ -2,6 +2,7 @@ package io.github.a1qs.vaultadditions.mixins.registry;
 
 import io.github.a1qs.vaultadditions.vault.menu.PowerTree;
 import io.github.a1qs.vaultadditions.vault.skill.ability.BladeFrenzyAbility;
+import io.github.a1qs.vaultadditions.vault.skill.ability.IdonasBarrageAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.LegacyManaShieldAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.ShieldWallAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.ThornedFrenzyAbility;
@@ -39,5 +40,6 @@ public class MixinSkillAdapter {
         instance.register("legacy_mana_shield", LegacyManaShieldAbility.class, LegacyManaShieldAbility::new);
         instance.register("blade_frenzy", BladeFrenzyAbility.class, BladeFrenzyAbility::new);
         instance.register("thorned_frenzy", ThornedFrenzyAbility.class, ThornedFrenzyAbility::new);
+        instance.register("idonas_barrage", IdonasBarrageAbility.class, IdonasBarrageAbility::new);
     }
 }

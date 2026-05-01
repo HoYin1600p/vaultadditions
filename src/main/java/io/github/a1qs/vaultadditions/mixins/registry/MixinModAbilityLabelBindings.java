@@ -1,6 +1,7 @@
 package io.github.a1qs.vaultadditions.mixins.registry;
 
 import io.github.a1qs.vaultadditions.vault.skill.ability.BladeFrenzyAbility;
+import io.github.a1qs.vaultadditions.vault.skill.ability.IdonasBarrageAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.LegacyManaShieldAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.ShieldWallAbility;
 import io.github.a1qs.vaultadditions.vault.skill.ability.ThornedFrenzyAbility;
@@ -55,6 +56,25 @@ public class MixinModAbilityLabelBindings {
                         ability -> AbilityLabelFormatters.ticks(ability.getDamageTickDelay()),
                         "additional_thorns_damage",
                         ability -> AbilityLabelFormatters.percentRounded(ability.getThornsMultiplier())
+                )
+        );
+        ModAbilityLabelBindings.register(
+                IdonasBarrageAbility.class,
+                Map.of(
+                        "damage",
+                        ability -> AbilityLabelFormatters.percentTwoDecimalPlaces(ability.getDamage()),
+                        "adjustedRadius",
+                        ability -> AbilityLabelFormatters.decimal(ability.getUnmodifiedRadius()),
+                        "adjustedDuration",
+                        ability -> AbilityLabelFormatters.ticks(Math.round(ability.getDuration())),
+                        "cooldown",
+                        ability -> AbilityLabelFormatters.ticks(Math.round(ability.getConfiguredCooldown())),
+                        "damageInterval",
+                        ability -> AbilityLabelFormatters.seconds(ability.getDamageFrequency()),
+                        "damageFrequency",
+                        ability -> AbilityLabelFormatters.seconds(ability.getDamageFrequency()),
+                        "throwSpeed",
+                        ability -> AbilityLabelFormatters.decimal(ability.getThrowSpeed())
                 )
         );
     }
