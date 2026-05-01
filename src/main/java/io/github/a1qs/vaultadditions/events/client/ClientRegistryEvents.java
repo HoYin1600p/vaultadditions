@@ -1,6 +1,8 @@
 package io.github.a1qs.vaultadditions.events.client;
 
 import io.github.a1qs.vaultadditions.VaultAdditions;
+import io.github.a1qs.vaultadditions.client.render.IdonasBarrageArrowRenderer;
+import io.github.a1qs.vaultadditions.client.render.IdonasBarrageRenderer;
 import io.github.a1qs.vaultadditions.init.ModEntities;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,5 +17,7 @@ public class ClientRegistryEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Replace NoopRenderer with the correct renderer for your entity
         event.registerEntityRenderer(ModEntities.THORN_CLOUD, NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.IDONAS_BARRAGE_ARROW, IdonasBarrageArrowRenderer::new);
+        event.registerEntityRenderer(ModEntities.IDONAS_BARRAGE, IdonasBarrageRenderer::new);
     }
 }

@@ -45,6 +45,7 @@
     "power_crystals.MixinSkillTabContainerElement",
     "power_crystals.border.MixinVirtualWorlds",
     "raid_plaques.MixinRaidCrystalObjective",
+    "registry.MixinAbilitiesConfig",
     "registry.MixinModAbilityLabelBindings",
     "registry.MixinModConfigs",
     "registry.MixinModGearAttributes",
