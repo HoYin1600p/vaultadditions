@@ -2,6 +2,7 @@
   "required": false,
   "minVersion": "0.8",
   "package": "io.github.a1qs.vaultadditions.mixins",
+  "plugin": "io.github.a1qs.vaultadditions.mixins.VaultAdditionsMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinAntiqueStampCollectorBook",
@@ -53,6 +54,7 @@
     "registry.MixinVaultModifierTypeRegistry",
     "registry.MixinVaultRegistry",
     "skillaltarfix.SkillAltarDataMixin",
+    "sophisticated_storage.MixinControllerBlockEntityBase",
     "wither_sound.MixinServerLevel"
   ],
   "refmap": "vaultadditions.mixin-refmap.json",
