@@ -216,8 +216,6 @@ dependencies {
     implementation localOrDeobfDependency("curse.maven:vault-hunters-api-1118899:7885720", ['**/vault-hunters-api-1118899-*_mapped_parchment_2022.11.06-1.18.2.jar'], ['vhapi-*.jar']) // prefer cached mapped VH API jars, fall back to local 3.21 install
     implementation localOrDeobfDependency("curse.maven:just-enough-vh-1035310:7318869", parchmentMappedJarPatterns('just-enough-vh-1035310-6830728'))
     implementation localOrDeobfDependency("curse.maven:geckolib-388172:4181370", parchmentMappedJarPatterns('geckolib-388172-4181370'), ['geckolib-forge-1.18-*.jar'])
-    implementation localOrDeobfDependency("curse.maven:sophisticated-backpacks-422301:5654080", [], ['sophisticatedbackpacks-*.jar'])
-    implementation localOrDeobfDependency("curse.maven:sophisticated-core-618298:5296312", [], ['sophisticatedcore-*.jar'])
     implementation localOrDeobfDependency("curse.maven:ice-and-fire-dragons-264231:5037775", parchmentMappedJarPatterns('ice-and-fire-dragons-264231-5037775'))
 
     implementation localOrDeobfDependency("xyz.iwolfking:woldsvaultsstandalone:0.22", [], ['woldsvaultsstandalone-0.22*.jar'])

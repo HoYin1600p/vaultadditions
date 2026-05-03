@@ -19,6 +19,7 @@ public class CommandEvents {
         new SpecialCommands(event.getDispatcher());
         new DebugCommands(event.getDispatcher());
         new WitherGlobalSoundCommands(event.getDispatcher());
+        new SophisticatedStorageCommands(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }

@@ -8,9 +8,12 @@ import io.github.a1qs.vaultadditions.network.BladeFrenzyParticleMessage;
 import iskallia.vault.core.data.adapter.Adapters;
 import iskallia.vault.core.net.BitBuffer;
 import iskallia.vault.event.ActiveFlags;
+import iskallia.vault.gear.attribute.type.VaultGearAttributeTypeMerger;
+import iskallia.vault.init.ModGearAttributes;
 import iskallia.vault.skill.ability.effect.spi.core.Ability;
 import iskallia.vault.skill.ability.effect.spi.core.InstantManaAbility;
 import iskallia.vault.skill.base.SkillContext;
+import iskallia.vault.snapshot.AttributeSnapshotHelper;
 import iskallia.vault.util.AABBHelper;
 import iskallia.vault.util.calc.AreaOfEffectHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -91,7 +94,11 @@ public class BladeFrenzyAbility extends InstantManaAbility {
     }
 
     protected float getDamage(ServerPlayer player) {
-        return (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * this.getPercentAttackDealt();
+        float attackDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float attackDamageIncrease = AttributeSnapshotHelper.getInstance()
+                .getSnapshot(player)
+                .getAttributeValue(ModGearAttributes.DAMAGE_INCREASE, VaultGearAttributeTypeMerger.floatSum());
+        return attackDamage * (1.0F + attackDamageIncrease) * this.getPercentAttackDealt();
     }
 
     @NotNull
