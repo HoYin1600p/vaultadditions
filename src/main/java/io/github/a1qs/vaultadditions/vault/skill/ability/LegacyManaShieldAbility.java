@@ -81,6 +81,13 @@ public class LegacyManaShieldAbility extends ToggleManaAbility {
     }
 
     @Override
+    public Ability.TickResult doActiveTick(SkillContext context) {
+        // This ability uses mana only on damage, not per-second — skip the parent's
+        // mana-depletion check so zero mana doesn't deactivate the shield passively.
+        return Ability.TickResult.PASS;
+    }
+
+    @Override
     public Ability.TickResult doInactiveTick(SkillContext context) {
         return context.getSource().as(ServerPlayer.class).map(player -> {
             if (player.hasEffect(this.getEffect())) {
