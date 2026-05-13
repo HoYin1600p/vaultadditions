@@ -141,7 +141,6 @@ repositories {
 }
 
 def prismModsDir = file('C:/Users/Ethan/AppData/Roaming/PrismLauncher/instances/NewPack Test/minecraft/mods')
-def s4ServerModsDir = file("E:/Git Repo's/s4server/mods")
 def forgeGradleCacheDir = file("${gradle.gradleUserHomeDir}/caches/forge_gradle/deobf_dependencies")
 
 def parchmentMappedJarPatterns = { String... prefixes ->
@@ -190,20 +189,6 @@ def localOrDeobfDependency = { String coords, List<String> cachePatterns = [], L
     return fg.deobf(coords)
 }
 
-def localModJar = { String... patterns ->
-    File prismJar = findDependencyJar(prismModsDir, patterns.collect { pattern -> "**/${pattern}" })
-    if (prismJar != null) {
-        return files(prismJar)
-    }
-
-    File serverJar = findDependencyJar(s4ServerModsDir, patterns.collect { pattern -> "**/${pattern}" })
-    if (serverJar != null) {
-        return files(serverJar)
-    }
-
-    return files()
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation localOrDeobfDependency('curse.maven:curios-309927:4985315', parchmentMappedJarPatterns('curios-309927-4985315'), ['curios-forge-1.18.2-*.jar'])
@@ -236,8 +221,6 @@ dependencies {
     implementation localOrDeobfDependency("xyz.iwolfking:woldsvaultsstandalone:0.22", [], ['woldsvaultsstandalone-0.22*.jar'])
 
     compileOnly "net.luckperms:api:5.5"
-    compileOnly localModJar('appliedenergistics2-forge-*.jar')
-    compileOnly localModJar('AE2WTLib-*.jar')
 
     compileOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}:api", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])
     runtimeOnly localOrDeobfDependency("mezz.jei:jei-${minecraft_version}:${jei_version}", parchmentMappedJarPatterns('jei-1.18.2-9.7.2.1001'), ['jei-1.18.2-9.7.2.1001.jar'])

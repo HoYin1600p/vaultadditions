@@ -60,8 +60,6 @@
   "refmap": "vaultadditions.mixin-refmap.json",
   "client": [
     "MixinCombatStatsContainerElement",
-    "ae2wtlib_compat.MixinPlayerEntityWidget",
-    "ae2wtlib_compat.MixinWCTScreen",
     "armor_effects.MixinElytraLayer",
     "armor_effects.sound.AccessorAbstractSoundInstance",
     "armor_effects.sound.MixinLocalPlayer",
