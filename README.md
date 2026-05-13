@@ -5,4 +5,8 @@ By right clicking on a Globe Expander with a Border Gemstone, it will increase t
 The Dimension multipliers & the Border Gemstone increases can be configured in a Config file named `vaultadditions-server.toml` inside the serverconfig directory.<br><br>
 
 This Mod requires the [Multi World Borders Unofficial](https://www.curseforge.com/minecraft/mc-mods/multi-world-borders-unofficial/files/5376292) mod to work properly.<br>
-This Mod is both Clientsided & Serversided.
+This Mod is both Clientsided & Serversided.<br><br>
+
+Portions of this mod are derived from Applied Energistics 2 Wireless Terminals / AE2WTLib by Mari_023,
+ licensed under the MIT License.
+ Original project: https://github.com/Mari023/AE2WirelessTerminalLibrary

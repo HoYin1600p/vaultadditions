@@ -217,6 +217,7 @@ dependencies {
     implementation localOrDeobfDependency("curse.maven:just-enough-vh-1035310:7318869", parchmentMappedJarPatterns('just-enough-vh-1035310-6830728'))
     implementation localOrDeobfDependency("curse.maven:geckolib-388172:4181370", parchmentMappedJarPatterns('geckolib-388172-4181370'), ['geckolib-forge-1.18-*.jar'])
     implementation localOrDeobfDependency("curse.maven:ice-and-fire-dragons-264231:5037775", parchmentMappedJarPatterns('ice-and-fire-dragons-264231-5037775'))
+    implementation localOrDeobfDependency("curse.maven:applied-energistics-2-223794:4136407", parchmentMappedJarPatterns('applied-energistics-2-223794-4136407'), ['appliedenergistics2-forge-*.jar'])
 
     implementation localOrDeobfDependency("xyz.iwolfking:woldsvaultsstandalone:0.22", [], ['woldsvaultsstandalone-0.22*.jar'])
 
