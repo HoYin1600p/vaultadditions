@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "ae2:wireless_terminal",
+      "required": false
+    },
+    {
+      "id": "ae2:wireless_crafting_terminal",
+      "required": false
+    }
+  ]
+}

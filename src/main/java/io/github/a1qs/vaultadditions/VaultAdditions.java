@@ -1,6 +1,7 @@
 package io.github.a1qs.vaultadditions;
 
 import com.mojang.logging.LogUtils;
+import io.github.a1qs.vaultadditions.compat.ae2.Ae2CuriosCompat;
 import io.github.a1qs.vaultadditions.block.blockentity.render.*;
 import io.github.a1qs.vaultadditions.config.ServerConfigs;
 import io.github.a1qs.vaultadditions.init.*;
@@ -61,6 +62,7 @@ public class VaultAdditions {
         ModModels.register();
         ModNetwork.initialize();
         VaultRegistry.OBJECTIVE.add(InfiniteRaidObjective.KEY);
+        event.enqueueWork(Ae2CuriosCompat::register);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
