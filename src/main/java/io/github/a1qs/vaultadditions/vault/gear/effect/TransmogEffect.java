@@ -59,6 +59,7 @@ public abstract class TransmogEffect {
 
     public static void registerTypes() {
         TYPES.clear();
+        register(ArchonRadiusTransmogEffect.TYPE);
         register(AbilitySoundTransmogEffect.TYPE);
         register(AttributeTransmogEffect.TYPE);
         register(ElytraSoundTransmogEffect.TYPE);

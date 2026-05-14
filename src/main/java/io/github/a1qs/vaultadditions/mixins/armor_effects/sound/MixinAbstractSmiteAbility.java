@@ -3,15 +3,19 @@ package io.github.a1qs.vaultadditions.mixins.armor_effects.sound;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.a1qs.vaultadditions.VaultAdditions;
+import io.github.a1qs.vaultadditions.config.Configs;
 import io.github.a1qs.vaultadditions.util.SoundChoice;
+import io.github.a1qs.vaultadditions.vault.gear.effect.ArchonRadiusTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.AbilitySoundTransmogEffect;
 import iskallia.vault.init.ModSounds;
+import iskallia.vault.skill.ability.effect.SmiteArchonAbility;
 import iskallia.vault.skill.ability.effect.spi.AbstractSmiteAbility;
 import iskallia.vault.skill.ability.effect.spi.core.ToggleManaAbility;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,6 +26,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AbstractSmiteAbility.class, remap = false)
 public class MixinAbstractSmiteAbility extends ToggleManaAbility {
+    @Inject(method = "getRadius", at = @At("RETURN"), cancellable = true)
+    private void addArchonRadiusBonus(Entity entity, CallbackInfoReturnable<Float> cir) {
+        if (!((Object) this instanceof SmiteArchonAbility) || !(entity instanceof Player player)) {
+            return;
+        }
+
+        float bonus = 0.0F;
+        for (ArchonRadiusTransmogEffect effect : Configs.TRANSMOG_EFFECTS_CONFIG.getEffects(player, ArchonRadiusTransmogEffect.class)) {
+            bonus += effect.getRadius();
+        }
+
+        if (bonus != 0.0F) {
+            cir.setReturnValue(cir.getReturnValueF() + bonus);
+        }
+    }
 
     @Inject(method = "doDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", ordinal = 1))
     public void injectSoundEvents(ServerPlayer player, float radius, float percentAbilityPowerDealt, CallbackInfoReturnable<Boolean> cir, @Local LivingEntity entity) {

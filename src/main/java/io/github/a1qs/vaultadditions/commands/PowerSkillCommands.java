@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.a1qs.vaultadditions.config.ServerConfigs;
 import io.github.a1qs.vaultadditions.data.PlayerAdditionalVaultStatData;
 import io.github.a1qs.vaultadditions.data.PlayerPowersData;
 import net.minecraft.commands.CommandSourceStack;
@@ -31,6 +32,14 @@ public class PowerSkillCommands {
 
                                 )
                         )
+                        .then(Commands.literal("globe-expander")
+                                .then(Commands.literal("on")
+                                        .executes(context -> setGlobeExpander(context, true))
+                                )
+                                .then(Commands.literal("off")
+                                        .executes(context -> setGlobeExpander(context, false))
+                                )
+                        )
                 )
 
         );
@@ -54,6 +63,13 @@ public class PowerSkillCommands {
         data.addPowerPoints(player, amount);
         context.getSource().sendSuccess(new TextComponent("Added " + amount + " of Power points to " + player.getName().getString()), true);
 
+        return 0;
+    }
+
+    private int setGlobeExpander(CommandContext<CommandSourceStack> context, boolean enabled) {
+        ServerConfigs.GLOBE_EXPANDER_ENABLED.set(enabled);
+        ServerConfigs.SPEC.save();
+        context.getSource().sendSuccess(new TextComponent("Globe Expander power crystal mode is now " + (enabled ? "On" : "Off")), true);
         return 0;
     }
 
