@@ -16,6 +16,7 @@ public class ServerConfigs {
     public static final ForgeConfigSpec.ConfigValue<Double> GROW_PLAYER_AMOUNT;
     public static final ForgeConfigSpec.ConfigValue<Double> GROW_PLAYER_CAP;
     public static final ForgeConfigSpec.ConfigValue<Boolean> SHOW_POWER_MENU;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> GLOBE_EXPANDER_ENABLED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LIMIT_WITHER_SPAWN_GLOBAL_SOUND;
 
 
@@ -50,6 +51,9 @@ public class ServerConfigs {
 
         SHOW_POWER_MENU = BUILDER.comment("Whether the Power menu should be shown to the player")
                 .define("SHOW_POWER_MENU", true);
+
+        GLOBE_EXPANDER_ENABLED = BUILDER.comment("When enabled, Power Crystals are reserved for Globe Expander usage instead of direct Power Point consumption")
+                .define("GLOBE_EXPANDER_ENABLED", false);
 
         LIMIT_WITHER_SPAWN_GLOBAL_SOUND = BUILDER.comment("When enabled, replaces the global Wither spawn sound with a ranged sound heard within 64 blocks")
                 .define("LIMIT_WITHER_SPAWN_GLOBAL_SOUND", false);
