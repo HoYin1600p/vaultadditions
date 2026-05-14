@@ -68,6 +68,10 @@ public class GlobeExpanderBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
+        if (!ServerConfigs.GLOBE_EXPANDER_ENABLED.get()) {
+            return InteractionResult.PASS;
+        }
+
         if (pLevel.isClientSide() || pHand != InteractionHand.MAIN_HAND || !(pPlayer instanceof ServerPlayer player)) {
             return InteractionResult.PASS;
         }
@@ -276,6 +280,11 @@ public class GlobeExpanderBlock extends BaseEntityBlock {
     }
 
     public static boolean isCurrentlyInUse() {
-        return !ServerConfigs.LIMIT_TIME_FOR_EXPANSION.get() || !TimeUtil.pastDate() || EventData.getServer().globeExpanderRequired();
+        return isEnabled()
+                && (!ServerConfigs.LIMIT_TIME_FOR_EXPANSION.get() || !TimeUtil.pastDate() || EventData.getServer().globeExpanderRequired());
+    }
+
+    public static boolean isEnabled() {
+        return ServerConfigs.GLOBE_EXPANDER_ENABLED.get();
     }
 }
