@@ -12,6 +12,7 @@ import io.github.a1qs.vaultadditions.util.ModelUtil;
 import io.github.a1qs.vaultadditions.util.SoundChoice;
 import io.github.a1qs.vaultadditions.util.VaultGearAttributeHelper;
 import io.github.a1qs.vaultadditions.vault.gear.effect.AbilitySoundTransmogEffect;
+import io.github.a1qs.vaultadditions.vault.gear.effect.ArchonRadiusTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.AttributeTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.ElytraSoundTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.HideElytraTransmogEffect;
@@ -190,6 +191,7 @@ public class TransmogEffectsConfig extends Config {
         migrateFallDamageReductionBonus(ModModels.Armor.VIKING.getModel(), 0.25F);
         migrateFallDamageReductionBonus(ModModels.Armor.CELESTIAL.getModel(), 0.25F);
         migrateFallDamageReductionBonus(ModModels.Armor.SPACE_MARINE.getModel(), 0.25F);
+        migrateHoyArchonRadiusBonus(2.0F);
         migrateVikingBonuses();
         migrateSpaceMarineBonuses();
     }
@@ -606,6 +608,35 @@ public class TransmogEffectsConfig extends Config {
         return abilityId.equals(abilityLevelAttribute.getAbility()) && abilityLevelAttribute.getLevelChange() == levelChange;
     }
 
+    private void migrateHoyArchonRadiusBonus(float radius) {
+        for (ArmorModel model : ModModels.HOY_ARMOR) {
+            List<TransmogEffect> effects = new ArrayList<>(this.effects.getOrDefault(model, List.of()));
+            boolean hasArchonRadiusBonus = false;
+
+            for (TransmogEffect effect : effects) {
+                if (effect instanceof ArchonRadiusTransmogEffect archonRadiusEffect
+                        && Float.compare(archonRadiusEffect.getRadius(), radius) == 0) {
+                    hasArchonRadiusBonus = true;
+                    break;
+                }
+            }
+
+            if (hasArchonRadiusBonus) {
+                continue;
+            }
+
+            effects.add(new ArchonRadiusTransmogEffect(radius));
+
+            JsonArray serializedEffects = new JsonArray();
+            for (TransmogEffect effect : effects) {
+                serializedEffects.add(effect.serialize());
+            }
+
+            this.transmogEffects.add(model.getId().toString(), serializedEffects);
+            this.effects.put(model, Collections.unmodifiableList(effects));
+        }
+    }
+
     @Override
     protected void reset() {
         for (ArmorModel model : ModModels.HOKAGE_ARMOR) {
@@ -633,6 +664,7 @@ public class TransmogEffectsConfig extends Config {
             effects.add(new AttributeTransmogEffect<>(VaultGearAttributeHelper.airMobilityControl(0.05F)).serialize());
             effects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.KINETIC_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
             effects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.FALL_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
+            effects.add(new ArchonRadiusTransmogEffect(2.0F).serialize());
             effects.add(new ElytraSoundTransmogEffect(ModSounds.HOY_ELYTRA_GLIDE.get(), 0.2F).serialize());
             effects.add(new AbilitySoundTransmogEffect(ModAbilities.SMITE_ARCHON, new SoundChoice(ModSounds.HOY_ACTIVATE_ARCHON.get())).serialize());
             effects.add(new AbilitySoundTransmogEffect("Smite_Abstract", new SoundChoice(ModSounds.HOY_ARCHON_BOLT.get())).serialize());
