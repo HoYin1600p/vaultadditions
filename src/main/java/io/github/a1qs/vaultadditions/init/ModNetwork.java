@@ -27,6 +27,8 @@ public class ModNetwork {
         CHANNEL.registerMessage(nextId(), BladeFrenzyParticleMessage.class, BladeFrenzyParticleMessage::encode, BladeFrenzyParticleMessage::decode, BladeFrenzyParticleMessage::handle);
         CHANNEL.registerMessage(nextId(), EventSyncMessage.class, EventSyncMessage::encode, EventSyncMessage::decode, EventSyncMessage::handle);
         CHANNEL.registerMessage(nextId(), UpdatePlayerTraderDataMessage.class, UpdatePlayerTraderDataMessage::encode, UpdatePlayerTraderDataMessage::decode, UpdatePlayerTraderDataMessage::handle);
+        CHANNEL.registerMessage(nextId(), PacketAe2MaterialListRequest.class, PacketAe2MaterialListRequest::encode, PacketAe2MaterialListRequest::decode, PacketAe2MaterialListRequest::handle);
+        CHANNEL.registerMessage(nextId(), PacketAe2MaterialListResponse.class, PacketAe2MaterialListResponse::encode, PacketAe2MaterialListResponse::decode, PacketAe2MaterialListResponse::handle);
     }
 
     public static int nextId() {

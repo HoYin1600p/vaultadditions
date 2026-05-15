@@ -17,6 +17,7 @@
     "appeng.MixinInventoryHotkeyAction",
     "appeng.MixinWirelessTerminalItemCurio",
     "buildinggadgets.MixinHandlerInsertProvider",
+    "buildinggadgets.MixinInventoryLinker",
     "buildinggadgets.MixinStackHandlerItemHandle",
     "sophisticatedcore.MixinInventoryHandlerExtract",
     "accessors.AccessorAttributeSnapshot",
