@@ -19,6 +19,14 @@ public class ServerConfigs {
     public static final ForgeConfigSpec.ConfigValue<Boolean> GLOBE_EXPANDER_ENABLED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> LIMIT_WITHER_SPAWN_GLOBAL_SOUND;
 
+    /**
+     * Building Gadgets compat — AE2 provider toggle.
+     * Default false: AE2 handlers are skipped during paste/undo to prevent
+     * "IllegalArgumentException: slot out of range" server crashes.
+     * Set true only if you specifically need BG to insert items back into ME storage.
+     */
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_AE2_BUILDING_GADGETS_PROVIDER;
+
 
     static {
         BUILDER.comment("ServerConfigs for VaultAdditions");
@@ -57,6 +65,12 @@ public class ServerConfigs {
 
         LIMIT_WITHER_SPAWN_GLOBAL_SOUND = BUILDER.comment("When enabled, replaces the global Wither spawn sound with a ranged sound heard within 64 blocks")
                 .define("LIMIT_WITHER_SPAWN_GLOBAL_SOUND", false);
+
+        ENABLE_AE2_BUILDING_GADGETS_PROVIDER = BUILDER.comment(
+                        "Allow Building Gadgets to insert items into Applied Energistics 2 inventories during paste/undo.",
+                        "Default FALSE: AE2 handlers are skipped to prevent 'slot out of range' server crashes during Undo.",
+                        "Enable only if you need BG to actively route items back into ME storage after an undo.")
+                .define("enableAe2BuildingGadgetsProvider", false);
 
         BUILDER.pop(); // General Settings End
 
