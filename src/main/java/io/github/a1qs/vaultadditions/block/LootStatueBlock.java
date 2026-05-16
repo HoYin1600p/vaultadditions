@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -261,15 +262,8 @@ public class LootStatueBlock extends BaseEntityBlock {
     }
 
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-        if (!world.isClientSide) {
-            BlockEntity tileEntity = world.getBlockEntity(pos);
-            ItemStack itemStack = new ItemStack(this);
-            if (tileEntity instanceof LootStatueBlockEntity tile) {
-                CompoundTag stackNBT = new CompoundTag();
-                stackNBT.put("BlockEntityTag", tile.saveWithoutMetadata());
-                itemStack.setTag(stackNBT);
-            }
-
+        if (!world.isClientSide && player.isCreative()) {
+            ItemStack itemStack = this.createDropStack(world.getBlockEntity(pos));
             ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, itemStack);
             itemEntity.setDefaultPickUpDelay();
             world.addFreshEntity(itemEntity);
@@ -303,7 +297,17 @@ public class LootStatueBlock extends BaseEntityBlock {
     @Override
     @ParametersAreNonnullByDefault
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        return List.of();
+        return List.of(this.createDropStack(builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY)));
+    }
+
+    private ItemStack createDropStack(@Nullable BlockEntity blockEntity) {
+        ItemStack itemStack = new ItemStack(this);
+        if (blockEntity instanceof LootStatueBlockEntity tile) {
+            CompoundTag stackNBT = new CompoundTag();
+            stackNBT.put("BlockEntityTag", tile.saveWithoutMetadata());
+            itemStack.setTag(stackNBT);
+        }
+        return itemStack;
     }
 
     @Override
