@@ -77,6 +77,7 @@ public class ModModels {
         CELESTIAL("celestial", "Celestial", new CelestialArmorLayers()),
         VIKING("viking", "Viking", new VikingArmorLayers(), true),
         BOKATAN("bokatan", "Bokatan", new BokatanArmorLayers()),
+        KVOTHE("kvothe", "Simple", new KvotheArmorLayers()),
         SPACE_MARINE("spacemarine", "Space Marine", new SpaceMarineArmorLayers());
 
         private final ArmorModel model;

@@ -52,6 +52,7 @@ public class MixinGearModelRollRaritiesConfig {
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/celestial");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/viking");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/bokatan");
+        addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/kvothe");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/spacemarine");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/grogu");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/eldritch");
