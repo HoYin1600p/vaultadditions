@@ -1,0 +1,54 @@
+package io.github.a1qs.vaultadditions.mixins.vault_gecko_compat;
+
+import io.github.a1qs.vaultadditions.util.ModelUtil;
+import io.github.a1qs.vaultadditions.vault.gear.gecko.VaultGeckoModel;
+import io.github.a1qs.vaultadditions.vault.gear.gecko.item.GeckoItemRenderProperties;
+import iskallia.vault.dynamodel.DynamicModel;
+import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
+import iskallia.vault.gear.item.VaultGearItem;
+import iskallia.vault.init.ModDynamicModels;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.IItemRenderProperties;
+import org.spongepowered.asm.mixin.Mixin;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import xyz.iwolfking.woldsvaults.items.gear.VaultBattleStaffItem;
+import xyz.iwolfking.woldsvaults.items.gear.VaultTridentItem;
+
+import java.util.function.Consumer;
+
+@Mixin(value = {VaultBattleStaffItem.class, VaultTridentItem.class}, remap = false)
+public abstract class MixinWoldVaultGearItem implements IAnimatable {
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        consumer.accept(new GeckoItemRenderProperties(null));
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        for (DynamicModelRegistry<? extends DynamicModel<?>> registry : ModDynamicModels.REGISTRIES.getUniqueRegistries()) {
+            registry.forEach((id, model) -> {
+                VaultGeckoModel gecko = ModelUtil.getGeckoModel(model);
+                if (gecko == null) {
+                    return;
+                }
+
+                data.addAnimationController(new AnimationController<>(this, ((DynamicModel<?>) gecko).getId() + " Animation Controller", gecko.getTransitionTicks(), event -> {
+                    DynamicModel<?> eventModel = ModelUtil.getDynamicModel(event.getExtraDataOfType(ItemStack.class).get(0));
+                    if (eventModel == gecko) {
+                        event.getController().setAnimation(gecko.getAnimation());
+                        return PlayState.CONTINUE;
+                    }
+                    return PlayState.STOP;
+                }));
+            });
+        }
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return ModelUtil.getAnimationFactory((VaultGearItem & IAnimatable) (Object) this);
+    }
+}
