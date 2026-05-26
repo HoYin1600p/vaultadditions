@@ -17,9 +17,12 @@ import org.spongepowered.asm.mixin.Unique;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+import xyz.iwolfking.woldsvaults.models.Battlestaffs;
+import xyz.iwolfking.woldsvaults.models.Tridents;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class ModelUtil {
@@ -35,9 +38,20 @@ public class ModelUtil {
         }
 
         GearDataCache cache = GearDataCache.of(itemStack);
-        return cache.getGearModel().flatMap(model -> ModDynamicModels.REGISTRIES.getModel(itemStack.getItem(), model))
+        return cache.getGearModel().flatMap(model -> getRegisteredModel(itemStack, model))
                 .map(model -> parent && model instanceof ArmorPieceModel piece ? piece.getArmorModel() : model)
                 .orElse(null);
+    }
+
+    private static Optional<? extends DynamicModel<?>> getRegisteredModel(ItemStack itemStack, ResourceLocation modelId) {
+        Optional<? extends DynamicModel<?>> model = ModDynamicModels.REGISTRIES.getModel(itemStack.getItem(), modelId);
+        if (model.isEmpty()) {
+            model = Battlestaffs.REGISTRY.get(modelId);
+        }
+        if (model.isEmpty()) {
+            model = Tridents.REGISTRY.get(modelId);
+        }
+        return model;
     }
 
     public static ArmorModel getArmorModel(ItemStack itemStack) {

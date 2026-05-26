@@ -18,20 +18,29 @@ import iskallia.vault.world.data.DiscoveredModelsData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class OnPlayerLogInEvent {
+    private static final int TRANSMOG_UNLOCK_DELAY_TICKS = 60;
+    private static final Map<UUID, Integer> PENDING_TRANSMOG_UNLOCKS = new HashMap<>();
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
@@ -58,6 +67,38 @@ public class OnPlayerLogInEvent {
         if (!(event.getPlayer() instanceof ServerPlayer player)) {
             return;
         }
+        PENDING_TRANSMOG_UNLOCKS.put(player.getUUID(), TRANSMOG_UNLOCK_DELAY_TICKS);
+    }
+
+    @SubscribeEvent
+    public static void processPendingTransmogUnlocks(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || PENDING_TRANSMOG_UNLOCKS.isEmpty()) {
+            return;
+        }
+
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
+
+        Iterator<Map.Entry<UUID, Integer>> iterator = PENDING_TRANSMOG_UNLOCKS.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, Integer> entry = iterator.next();
+            int ticksRemaining = entry.getValue() - 1;
+            if (ticksRemaining > 0) {
+                entry.setValue(ticksRemaining);
+                continue;
+            }
+
+            iterator.remove();
+            ServerPlayer player = server.getPlayerList().getPlayer(entry.getKey());
+            if (player != null) {
+                unlockConfiguredTransmogs(player);
+            }
+        }
+    }
+
+    private static void unlockConfiguredTransmogs(ServerPlayer player) {
         ServerLevel level = player.getLevel();
 
         LinkedHashSet<DynamicModel<?>> models = new LinkedHashSet<>();

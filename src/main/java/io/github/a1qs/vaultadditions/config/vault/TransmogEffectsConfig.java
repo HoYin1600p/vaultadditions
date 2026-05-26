@@ -20,6 +20,7 @@ import io.github.a1qs.vaultadditions.vault.gear.effect.StyledAbilityLevelTransmo
 import io.github.a1qs.vaultadditions.vault.gear.effect.StyledTalentLevelTransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.TransmogEffect;
 import io.github.a1qs.vaultadditions.vault.gear.effect.VanillaAttributeArmorTransmogEffect;
+import io.github.a1qs.vaultadditions.vault.gear.effect.ZarithReputationTransmogEffect;
 import iskallia.vault.config.Config;
 import iskallia.vault.gear.attribute.custom.effect.EffectGearAttribute;
 import iskallia.vault.gear.attribute.talent.TalentLevelAttribute;
@@ -194,6 +195,7 @@ public class TransmogEffectsConfig extends Config {
         migrateHoyArchonRadiusBonus(2.0F);
         migrateVikingBonuses();
         migrateSpaceMarineBonuses();
+        migrateDarkestBonuses();
     }
 
     private void migrateAirMobilityBonuses(Iterable<ArmorModel> models, float legacyPairSpeed, float legacyControl, float playerBaseSpeed, float playerBaseAirMovement) {
@@ -517,6 +519,33 @@ public class TransmogEffectsConfig extends Config {
         return talentId.equals(talentLevelAttribute.getTalent()) && talentLevelAttribute.getLevelChange() == levelChange;
     }
 
+    private void migrateDarkestBonuses() {
+        ArmorModel model = ModModels.Armor.DARKEST.getModel();
+        List<TransmogEffect> effects = new ArrayList<>(this.effects.getOrDefault(model, List.of()));
+        boolean hasZarithReputationBonus = false;
+
+        for (TransmogEffect effect : effects) {
+            if (effect instanceof ZarithReputationTransmogEffect zarithEffect && zarithEffect.getAmount() == 5) {
+                hasZarithReputationBonus = true;
+                break;
+            }
+        }
+
+        if (hasZarithReputationBonus) {
+            return;
+        }
+
+        effects.add(new ZarithReputationTransmogEffect(5));
+
+        JsonArray serializedEffects = new JsonArray();
+        for (TransmogEffect effect : effects) {
+            serializedEffects.add(effect.serialize());
+        }
+
+        this.transmogEffects.add(model.getId().toString(), serializedEffects);
+        this.effects.put(model, Collections.unmodifiableList(effects));
+    }
+
     private void migrateSpaceMarineBonuses() {
         ArmorModel model = ModModels.Armor.SPACE_MARINE.getModel();
         List<TransmogEffect> effects = new ArrayList<>(this.effects.getOrDefault(model, List.of()));
@@ -702,6 +731,10 @@ public class TransmogEffectsConfig extends Config {
         spaceMarineEffects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.FALL_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
         spaceMarineEffects.add(new VanillaAttributeArmorTransmogEffect<>(ModAttributes.SIZE_SCALE, AttributeModifier.Operation.MULTIPLY_TOTAL, 0.25F).serialize());
         transmogEffects.add(ModModels.Armor.SPACE_MARINE.getModel().getId().toString(), spaceMarineEffects);
+
+        JsonArray darkestEffects = new JsonArray();
+        darkestEffects.add(new ZarithReputationTransmogEffect(5).serialize());
+        transmogEffects.add(ModModels.Armor.DARKEST.getModel().getId().toString(), darkestEffects);
     }
 
     @Override

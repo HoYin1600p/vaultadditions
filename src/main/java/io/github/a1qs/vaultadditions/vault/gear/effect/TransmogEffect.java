@@ -67,5 +67,6 @@ public abstract class TransmogEffect {
         register(StyledAbilityLevelTransmogEffect.TYPE);
         register(StyledTalentLevelTransmogEffect.TYPE);
         register(VanillaAttributeArmorTransmogEffect.TYPE);
+        register(ZarithReputationTransmogEffect.TYPE);
     }
 }

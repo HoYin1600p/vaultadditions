@@ -27,6 +27,9 @@
     "additions_events.MixinAwardCrateObjective",
     "additions_events.MixinVaultPortalBlock",
     "armor_effects.MixinAttributeSnapshotCalculator",
+    "armor_effects.MixinChaosCharmData",
+    "armor_effects.MixinPlayerReputationData",
+    "armor_effects.MixinVaultCharmItem",
     "armor_effects.sound.MixinAbstractSmiteAbility",
     "armor_effects.sound.MixinDashAbility",
     "armor_effects.sound.MixinManaShieldAbility",
@@ -45,6 +48,7 @@
     "oversized_chunks.TreasureSandTileEntityMixin",
     "oversized_chunks.VaultChestTileEntityMixin",
     "oversized_chunks.VaultOreTileEntityMixin",
+    "patreon.MixinCustomVaultGearModelRollRaritiesConfig",
     "patreon.MixinGearModelRollRaritiesConfig",
     "patreon.MixinTransmogTableBlock",
     "power_crystals.MixinAttributeSnapshotCalculator",
@@ -72,9 +76,11 @@
     "armor_effects.sound.MixinLocalPlayer",
     "loot_statue.MixinLootStatueScreen",
     "power_crystals.MixinVaultBarOverlay",
+    "vault_gecko_compat.MixinItem",
     "vault_gecko_compat.MixinModDynamicModels",
     "vault_gecko_compat.MixinVaultArmorItem",
     "vault_gecko_compat.MixinVaultArmorRenderProperties",
-    "vault_gecko_compat.MixinVaultGearItem"
+    "vault_gecko_compat.MixinVaultGearItem",
+    "vault_gecko_compat.MixinWoldVaultGearItem"
   ]
 }
