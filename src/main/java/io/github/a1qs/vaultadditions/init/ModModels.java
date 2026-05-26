@@ -50,6 +50,8 @@ public class ModModels {
         }
         // `madness` is rolled from GearModelRollRaritiesConfig, so it must exist server-side.
         GeckoItem.MADNESS.getType().register(GeckoItem.MADNESS.model);
+        GeckoItem.GUARDIAN_BATTLESTAFF.getType().register(GeckoItem.GUARDIAN_BATTLESTAFF.model);
+        GeckoItem.GUARDIAN_TRIDENT.getType().register(GeckoItem.GUARDIAN_TRIDENT.model);
     }
 
     @SubscribeEvent @OnlyIn(Dist.CLIENT)
@@ -78,6 +80,8 @@ public class ModModels {
         VIKING("viking", "Viking", new VikingArmorLayers(), true),
         BOKATAN("bokatan", "Bokatan", new BokatanArmorLayers()),
         KVOTHE("kvothe", "Simple", new KvotheArmorLayers()),
+        DARKEST("darkest", "Zarith", new DarkestArmorLayers()),
+        GUARDIAN("guardian", "Guardian", new GuardianArmorLayers()),
         SPACE_MARINE("spacemarine", "Space Marine", new SpaceMarineArmorLayers());
 
         private final ArmorModel model;
@@ -141,6 +145,7 @@ public class ModModels {
         DARKSABER("darksaber", "The Darksaber", ModelType.BATTLESTAFF),
         SIDEARM("sidearm", "Sidearm", ModelType.WAND),
         RELIC_SHIELD("relicshield", "Relic Shield", ModelType.SHIELD),
+        GUARDIAN_SHIELD("guardianshield", "Guardian Shield", ModelType.SHIELD),
         CHAIN_SWORD("chain_sword", "Chain-Sword", ModelType.SWORD),
         DARKSABER2("darksaber2", "The Darksaber", ModelType.BATTLESTAFF),
         ELDRITCH_STAFF("eldritch_staff", "Eldritch Staff", ModelType.BATTLESTAFF),
@@ -174,6 +179,8 @@ public class ModModels {
 
     public enum GeckoItem {
         MADNESS("madness", "Madness Focus", "balls", 20, ModelType.FOCUS),
+        GUARDIAN_BATTLESTAFF("guardiantrident", "Guardian Battlestaff", "idle", 20, ModelType.BATTLESTAFF),
+        GUARDIAN_TRIDENT("guardiantrident", "Guardian Trident", "idle", 20, ModelType.TRIDENT),
         DARKSABER2("darksaber2", "The Darksaber 2", "blade", 20, ModelType.BATTLESTAFF);
         private final DynamicModel<?> model;
         private final ModelType type;

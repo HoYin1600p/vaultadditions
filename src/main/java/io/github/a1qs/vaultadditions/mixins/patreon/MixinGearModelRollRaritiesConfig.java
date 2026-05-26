@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.iwolfking.woldsvaults.configs.gear.CustomVaultGearModelRollRaritiesConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +32,18 @@ public class MixinGearModelRollRaritiesConfig {
         vaultAdditions$patchRolls();
     }
 
-    @Inject(method = "getRolls(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", at = @At("HEAD"))
+    @Inject(method = "getRolls(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", at = @At("HEAD"), cancellable = true)
     private void vaultAdditions$patchStackRolls(ItemStack stack, CallbackInfoReturnable<Map<String, List<String>>> cir) {
         vaultAdditions$patchRolls();
+        vaultAdditions$patchWoldRolls();
+        vaultAdditions$getWoldRolls(stack.getItem(), cir);
     }
 
-    @Inject(method = "getRolls(Lnet/minecraft/world/item/Item;)Ljava/util/Map;", at = @At("HEAD"))
+    @Inject(method = "getRolls(Lnet/minecraft/world/item/Item;)Ljava/util/Map;", at = @At("HEAD"), cancellable = true)
     private void vaultAdditions$patchItemRolls(Item item, CallbackInfoReturnable<Map<String, List<String>>> cir) {
         vaultAdditions$patchRolls();
+        vaultAdditions$patchWoldRolls();
+        vaultAdditions$getWoldRolls(item, cir);
     }
 
     @Unique
@@ -53,6 +58,8 @@ public class MixinGearModelRollRaritiesConfig {
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/viking");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/bokatan");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/kvothe");
+        addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/darkest");
+        addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/guardian");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/spacemarine");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/grogu");
         addRoll(ARMOR_MODEL_ROLLS, "SPECIAL", "the_vault:gear/armor/eldritch");
@@ -65,6 +72,7 @@ public class MixinGearModelRollRaritiesConfig {
 
         //Shield Rolls
         addRoll(SHIELD_MODEL_ROLLS,"SPECIAL","the_vault:gear/shield/relicshield");
+        addRoll(SHIELD_MODEL_ROLLS,"SPECIAL","the_vault:gear/shield/guardianshield");
 
         //Wand Rolls
         addRoll(WAND_MODEL_ROLLS,"SPECIAL","the_vault:gear/wand/sidearm");
@@ -75,6 +83,21 @@ public class MixinGearModelRollRaritiesConfig {
 
         //Magnet Rolls
 
+    }
+
+    @Unique
+    private static void vaultAdditions$patchWoldRolls() {
+        addRoll(CustomVaultGearModelRollRaritiesConfig.BATTLESTAFF_MODEL_ROLLS, "SPECIAL", "the_vault:gear/battlestaff/guardiantrident");
+        addRoll(CustomVaultGearModelRollRaritiesConfig.TRIDENT_MODEL_ROLLS, "SPECIAL", "the_vault:gear/trident/guardiantrident");
+    }
+
+    @Unique
+    private static void vaultAdditions$getWoldRolls(Item item, CallbackInfoReturnable<Map<String, List<String>>> cir) {
+        if (item == xyz.iwolfking.woldsvaults.init.ModItems.BATTLESTAFF) {
+            cir.setReturnValue(CustomVaultGearModelRollRaritiesConfig.BATTLESTAFF_MODEL_ROLLS);
+        } else if (item == xyz.iwolfking.woldsvaults.init.ModItems.TRIDENT) {
+            cir.setReturnValue(CustomVaultGearModelRollRaritiesConfig.TRIDENT_MODEL_ROLLS);
+        }
     }
 
     @Unique

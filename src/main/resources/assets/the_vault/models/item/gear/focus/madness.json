@@ -1,5 +1,6 @@
 {
   "credit": "Made with Blockbench",
+  "vaultadditions:cull_faces": true,
   "parent": "builtin/entity",
   "texture_size": [
     32,
