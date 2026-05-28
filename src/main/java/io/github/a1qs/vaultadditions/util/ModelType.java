@@ -1,9 +1,6 @@
 package io.github.a1qs.vaultadditions.util;
 
 import io.github.a1qs.vaultadditions.VaultAdditions;
-import io.github.a1qs.vaultadditions.vault.gear.gecko.item.GeckoHandHeldModel;
-import io.github.a1qs.vaultadditions.vault.gear.gecko.item.GeckoPlainModel;
-import io.github.a1qs.vaultadditions.vault.gear.gecko.item.GeckoShieldModel;
 import iskallia.vault.VaultMod;
 import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
@@ -12,40 +9,39 @@ import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModDynamicModels;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import xyz.iwolfking.woldsvaults.models.Battlestaffs;
 import xyz.iwolfking.woldsvaults.models.Tridents;
 
 public enum ModelType {
-    SWORD(ModDynamicModels.Swords.REGISTRY, HandHeldModel::new, GeckoHandHeldModel::new),
-    AXE(ModDynamicModels.Axes.REGISTRY, HandHeldModel::new, GeckoHandHeldModel::new),
-    BATTLESTAFF(Battlestaffs.REGISTRY, HandHeldModel::new, GeckoHandHeldModel::new),
-    TRIDENT(Tridents.REGISTRY, HandHeldModel::new, GeckoHandHeldModel::new),
-    SHIELD(ModDynamicModels.Shields.REGISTRY, ShieldModel::new, GeckoShieldModel::new),
-    FOCUS(ModDynamicModels.Focus.REGISTRY, PlainItemModel::new, GeckoPlainModel::new),
-    WAND(ModDynamicModels.Wands.REGISTRY, PlainItemModel::new, GeckoPlainModel::new),
-    MAGNETS(ModDynamicModels.Magnets.REGISTRY, PlainItemModel::new, GeckoPlainModel::new),
-    WENDARR_IDOL("idol", ModDynamicModels.Idols.REGISTRY_WENDARR, PlainItemModel::new, GeckoPlainModel::new),
-    IDONA_IDOL("idol", ModDynamicModels.Idols.REGISTRY_IDONA, PlainItemModel::new, GeckoPlainModel::new),
-    VELARA_IDOL("idol", ModDynamicModels.Idols.REGISTRY_VELARA, PlainItemModel::new, GeckoPlainModel::new),
-    TENOS_IDOL("idol", ModDynamicModels.Idols.REGISTRY_TENOS, PlainItemModel::new, GeckoPlainModel::new);
+    SWORD(ModDynamicModels.Swords.REGISTRY, HandHeldModel::new),
+    AXE(ModDynamicModels.Axes.REGISTRY, HandHeldModel::new),
+    BATTLESTAFF(Battlestaffs.REGISTRY, HandHeldModel::new),
+    TRIDENT(Tridents.REGISTRY, HandHeldModel::new),
+    SHIELD(ModDynamicModels.Shields.REGISTRY, ShieldModel::new),
+    FOCUS(ModDynamicModels.Focus.REGISTRY, PlainItemModel::new),
+    WAND(ModDynamicModels.Wands.REGISTRY, PlainItemModel::new),
+    MAGNETS(ModDynamicModels.Magnets.REGISTRY, PlainItemModel::new),
+    WENDARR_IDOL("idol", ModDynamicModels.Idols.REGISTRY_WENDARR, PlainItemModel::new),
+    IDONA_IDOL("idol", ModDynamicModels.Idols.REGISTRY_IDONA, PlainItemModel::new),
+    VELARA_IDOL("idol", ModDynamicModels.Idols.REGISTRY_VELARA, PlainItemModel::new),
+    TENOS_IDOL("idol", ModDynamicModels.Idols.REGISTRY_TENOS, PlainItemModel::new);
 
     private final String type;
     private final DynamicModelRegistry<?> registry;
     private final ModelFactory modelFactory;
-    private final GeckoModelFactory geckoModelFactory;
 
-    ModelType(DynamicModelRegistry<?> registry, ModelFactory modelFactory, GeckoModelFactory geckoModelFactory) {
+    ModelType(DynamicModelRegistry<?> registry, ModelFactory modelFactory) {
         this.type = name().toLowerCase();
         this.registry = registry;
         this.modelFactory = modelFactory;
-        this.geckoModelFactory = geckoModelFactory;
     }
 
-    ModelType(String type, DynamicModelRegistry<?> registry, ModelFactory modelFactory, GeckoModelFactory geckoModelFactory) {
+    ModelType(String type, DynamicModelRegistry<?> registry, ModelFactory modelFactory) {
         this.type = type;
         this.registry = registry;
         this.modelFactory = modelFactory;
-        this.geckoModelFactory = geckoModelFactory;
     }
 
     public DynamicModel<?> createModel(String id, String displayName) {
@@ -57,11 +53,18 @@ public enum ModelType {
     }
 
     public DynamicModel<?> createGeckoModel(String id, String displayName, String animationName, float transitionTicks) {
-        return geckoModelFactory.create(id, type, displayName, animationName, transitionTicks);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            return ClientModelFactories.createGeckoModel(this, id, displayName, animationName, transitionTicks);
+        }
+        return createModel(id, displayName);
     }
 
     public DynamicModelRegistry<?> getRegistry() {
         return registry;
+    }
+
+    String getType() {
+        return type;
     }
 
     public void register(DynamicModel<?> model) {
@@ -92,11 +95,6 @@ public enum ModelType {
     @FunctionalInterface
     private interface ModelFactory {
         DynamicModel<?> create(ResourceLocation id, String displayName);
-    }
-
-    @FunctionalInterface
-    private interface GeckoModelFactory {
-        DynamicModel<?> create(String id, String type, String displayName, String animationName, float transitionTicks);
     }
 
     private static <C> C forceCast(Object obj) {
