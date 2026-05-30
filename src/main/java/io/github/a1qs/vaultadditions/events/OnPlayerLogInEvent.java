@@ -39,7 +39,7 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class OnPlayerLogInEvent {
-    private static final int TRANSMOG_UNLOCK_DELAY_TICKS = 60;
+    private static final int TRANSMOG_UNLOCK_DELAY_TICKS = 200;
     private static final Map<UUID, Integer> PENDING_TRANSMOG_UNLOCKS = new HashMap<>();
 
     @SubscribeEvent
