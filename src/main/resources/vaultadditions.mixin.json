@@ -19,6 +19,7 @@
     "buildinggadgets.MixinHandlerInsertProvider",
     "buildinggadgets.MixinInventoryLinker",
     "buildinggadgets.MixinStackHandlerItemHandle",
+    "sophisticatedcore.MixinCompactingUpgradeWrapper",
     "sophisticatedcore.MixinInventoryHandlerExtract",
     "accessors.AccessorAttributeSnapshot",
     "accessors.InvokeAttributeSnapshotAttributeValue",
