@@ -19,6 +19,7 @@
     "buildinggadgets.MixinHandlerInsertProvider",
     "buildinggadgets.MixinInventoryLinker",
     "buildinggadgets.MixinStackHandlerItemHandle",
+    "cfm.MixinBlockEntityType",
     "sophisticatedcore.MixinCompactingUpgradeWrapper",
     "sophisticatedcore.MixinInventoryHandlerExtract",
     "accessors.AccessorAttributeSnapshot",
