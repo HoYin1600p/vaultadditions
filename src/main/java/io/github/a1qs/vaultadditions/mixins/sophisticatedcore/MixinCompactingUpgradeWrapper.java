@@ -8,21 +8,55 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Prevents compacting fit checks from re-entering live storage insertion.
+ * Prevents compacting from re-entering live storage insertion.
  *
  * <p>SophisticatedCore's no-remaining-items compacting path checks whether the
  * compacted result fits by calling InventoryHelper.insertIntoInventory(result,
  * handler, true) on the live handler. For InventoryHandler this still goes
  * through the global slot tracker / overflow path, which can recurse through
  * controller or AE2 external-storage insertion during an onAfterInsert compact.
+ *
+ * <p>The actual compact result insert can also fire onAfterInsert immediately
+ * while compacting is already in progress. Guard compactSlot per thread so a
+ * compacting upgrade does not recursively compact while it is inserting its own
+ * result back into the same storage network.
  */
 @Restriction(require = @Condition(type = Condition.Type.MOD, value = "sophisticatedcore"))
 @Pseudo
 @Mixin(targets = "net.p3pp3rf1y.sophisticatedcore.upgrades.compacting.CompactingUpgradeWrapper", remap = false)
 public abstract class MixinCompactingUpgradeWrapper {
+    private static final ThreadLocal<Boolean> VAULTADDITIONS_COMPACTING = ThreadLocal.withInitial(() -> false);
+
+    @Inject(
+            method = "compactSlot(Lnet/p3pp3rf1y/sophisticatedcore/inventory/IItemHandlerSimpleInserter;I)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 0,
+            remap = false
+    )
+    private void vaultadditions$skipNestedCompacting(Object itemHandler, int slot, CallbackInfo ci) {
+        if (VAULTADDITIONS_COMPACTING.get()) {
+            ci.cancel();
+            return;
+        }
+
+        VAULTADDITIONS_COMPACTING.set(true);
+    }
+
+    @Inject(
+            method = "compactSlot(Lnet/p3pp3rf1y/sophisticatedcore/inventory/IItemHandlerSimpleInserter;I)V",
+            at = @At("RETURN"),
+            require = 0,
+            remap = false
+    )
+    private void vaultadditions$clearCompactingGuard(Object itemHandler, int slot, CallbackInfo ci) {
+        VAULTADDITIONS_COMPACTING.set(false);
+    }
 
     @Redirect(
             method = "fitsResultAndRemainingItems",
