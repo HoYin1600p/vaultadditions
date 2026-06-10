@@ -8,6 +8,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -39,7 +40,7 @@ public abstract class MixinCompactingUpgradeWrapper {
             require = 0,
             remap = false
     )
-    private void vaultadditions$skipNestedCompacting(Object itemHandler, int slot, CallbackInfo ci) {
+    private void vaultadditions$skipNestedCompacting(@Coerce Object itemHandler, int slot, CallbackInfo ci) {
         if (VAULTADDITIONS_COMPACTING.get()) {
             ci.cancel();
             return;
@@ -54,7 +55,7 @@ public abstract class MixinCompactingUpgradeWrapper {
             require = 0,
             remap = false
     )
-    private void vaultadditions$clearCompactingGuard(Object itemHandler, int slot, CallbackInfo ci) {
+    private void vaultadditions$clearCompactingGuard(@Coerce Object itemHandler, int slot, CallbackInfo ci) {
         VAULTADDITIONS_COMPACTING.set(false);
     }
 
