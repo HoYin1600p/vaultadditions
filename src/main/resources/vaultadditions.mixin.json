@@ -84,6 +84,7 @@
     "power_crystals.MixinVaultBarOverlay",
     "sophisticatedstorage.SophisticatedStorageBarrelBakedModelBaseMixin",
     "sophisticatedstorage.SophisticatedStorageDisplayItemRendererMixin",
+    "sophisticatedstorage.SophisticatedStorageLimitedBarrelClientInteractionMixin",
     "vault_gecko_compat.MixinItem",
     "vault_gecko_compat.MixinModDynamicModels",
     "vault_gecko_compat.MixinVaultArmorItem",
