@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, VaultAdditions.MOD_ID);
+    public static final DeferredRegister<Block> THE_VAULT_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "the_vault");
 
 
     public static final RegistryObject<Block> GLOBE_EXPANDER = registerBlock("globe_expander",
@@ -76,6 +77,36 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(1.5F, 1200.0F).noOcclusion().requiresCorrectToolForDrops()),
             true);
+
+    public static final RegistryObject<Block> IDONA_LEAVES = registerTheVaultBlock("idona_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)), true);
+
+    public static final RegistryObject<Block> IDONA_STRIPPED_LOG = registerTheVaultBlock("stripped_idona_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), true);
+
+    public static final RegistryObject<Block> IDONA_LOG = registerTheVaultBlock("idona_log",
+            () -> new StrippableLogBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG), IDONA_STRIPPED_LOG), true);
+
+    public static final RegistryObject<Block> IDONA_PLANKS = registerTheVaultBlock("idona_planks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)), true);
+
+    public static final RegistryObject<Block> WENDARR_LEAVES = registerTheVaultBlock("wendarr_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)), true);
+
+    public static final RegistryObject<Block> WENDARR_STRIPPED_LOG = registerTheVaultBlock("stripped_wendarr_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)), true);
+
+    public static final RegistryObject<Block> WENDARR_LOG = registerTheVaultBlock("wendarr_log",
+            () -> new StrippableLogBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG), WENDARR_STRIPPED_LOG), true);
+
+    public static final RegistryObject<Block> WENDARR_PLANKS = registerTheVaultBlock("wendarr_planks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)), true);
+
+    public static final RegistryObject<Block> TENOS_LEAVES = registerTheVaultBlock("tenos_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)), true);
+
+    public static final RegistryObject<Block> CHROMATIC_LEAVES = registerTheVaultBlock("chromatic_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)), true);
 
 
     public static final RegistryObject<Block> CUT_CALCITE_BRICKS = registerBlock("cut_calcite_bricks_mimic",
@@ -211,9 +242,21 @@ public class ModBlocks {
         return toReturn;
     }
 
+    private static <T extends Block> RegistryObject<T> registerTheVaultBlock(String name, Supplier<T> block, boolean createBlockItem) {
+        RegistryObject<T> toReturn = THE_VAULT_BLOCKS.register(name, block);
+        if(createBlockItem) registerTheVaultBlockItem(name, toReturn, VaultAdditions.VAULT_ADDITIONS_TAB);
+        return toReturn;
+    }
+
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(tab)));
+    }
+
+    private static <T extends Block> RegistryObject<Item> registerTheVaultBlockItem(String name, RegistryObject<T> block,
+                                                                                   CreativeModeTab tab) {
+        return ModItems.THE_VAULT_ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(tab)));
     }
 

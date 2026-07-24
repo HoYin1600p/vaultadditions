@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "the_vault:block/tenos_leaves"
+  }
+}
