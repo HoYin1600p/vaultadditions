@@ -40,7 +40,9 @@ public class VaultAdditions {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.ITEMS.register(eventBus);
+        ModItems.THE_VAULT_ITEMS.register(eventBus);
         ModBlocks.BLOCKS.register(eventBus);
+        ModBlocks.THE_VAULT_BLOCKS.register(eventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(eventBus);
         ModParticles.PARTICLE_TYPES.register(eventBus);
         ModSounds.SOUNDS.register(eventBus);
@@ -76,6 +78,10 @@ public class VaultAdditions {
         BlockEntityRenderers.register(ModBlockEntities.COLORED_VELVET_BED_BLOCK_ENTITY.get(), ColoredVelvetBedRenderer::new);
         BlockEntityRenderers.register(ModBlockEntities.RAID_PLAQUE_BLOCK_ENTITY.get(), RaidPlaqueRenderer::new);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENCHANTED_FIRE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.IDONA_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WENDARR_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENOS_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHROMATIC_LEAVES.get(), RenderType.cutoutMipped());
         LOGGER.info("Registered VaultAdditions Block Entity Renderers");
     }
 

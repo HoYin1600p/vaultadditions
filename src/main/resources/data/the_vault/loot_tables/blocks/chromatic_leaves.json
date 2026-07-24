@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "the_vault:chromatic_leaves"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "the_vault:chromatic_iron_nugget"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:bonus_chance",
+          "enchantment": "minecraft:fortune",
+          "chances": [
+            0.005,
+            0.0055555557,
+            0.00625,
+            0.008333334,
+            0.025
+          ]
+        }
+      ]
+    }
+  ]
+}

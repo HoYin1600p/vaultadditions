@@ -15,6 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, VaultAdditions.MOD_ID);
+    public static final DeferredRegister<Item> THE_VAULT_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "the_vault");
 
     public static final RegistryObject<Item> POWER_CRYSTAL = ITEMS.register("power_crystal",
             () -> new PowerCrystal(new Item.Properties().tab(VaultAdditions.VAULT_ADDITIONS_TAB)));
