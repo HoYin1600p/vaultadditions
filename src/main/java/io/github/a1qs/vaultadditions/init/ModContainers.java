@@ -1,5 +1,6 @@
 package io.github.a1qs.vaultadditions.init;
 
+import io.github.a1qs.vaultadditions.container.AltarDoubleChestContainer;
 import io.github.a1qs.vaultadditions.container.LootStatueContainer;
 import io.github.a1qs.vaultadditions.container.PlayerTraderContainer;
 import io.github.a1qs.vaultadditions.container.RenameContainer;
@@ -24,6 +25,7 @@ public class ModContainers {
     public static MenuType<LootStatueContainer> LOOT_STATUE_CONTAINER;
     public static MenuType<RenameContainer> RENAMING_CONTAINER;
     public static MenuType<PlayerTraderContainer> PLAYER_TRADER_CONTAINER;
+    public static MenuType<AltarDoubleChestContainer> ALTAR_DOUBLE_CHEST_CONTAINER;
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<MenuType<?>> event) {
@@ -49,10 +51,13 @@ public class ModContainers {
             return new PlayerTraderContainer(windowId, world, pos, inventory);
         });
 
+        ALTAR_DOUBLE_CHEST_CONTAINER = IForgeMenuType.create((windowId, inventory, buffer) ->
+                new AltarDoubleChestContainer(windowId, inventory));
 
         event.getRegistry().register(POWERS_TAB_CONTAINER.setRegistryName("power_tab"));
         event.getRegistry().register(LOOT_STATUE_CONTAINER.setRegistryName("loot_statue_container"));
         event.getRegistry().register(RENAMING_CONTAINER.setRegistryName("renaming_container"));
         event.getRegistry().register(PLAYER_TRADER_CONTAINER.setRegistryName("player_trader_container"));
+        event.getRegistry().register(ALTAR_DOUBLE_CHEST_CONTAINER.setRegistryName("altar_double_chest"));
     }
 }

@@ -1,5 +1,6 @@
 package io.github.a1qs.vaultadditions.init;
 
+import io.github.a1qs.vaultadditions.client.menu.AltarDoubleChestScreen;
 import io.github.a1qs.vaultadditions.client.menu.LootStatueMenu;
 import io.github.a1qs.vaultadditions.client.menu.PlayerTraderMenu;
 import io.github.a1qs.vaultadditions.client.menu.RenameMenu;
@@ -15,5 +16,6 @@ public class ModScreens {
         MenuScreens.register(ModContainers.LOOT_STATUE_CONTAINER, LootStatueMenu::new);
         MenuScreens.register(ModContainers.RENAMING_CONTAINER, RenameMenu::new);
         MenuScreens.register(ModContainers.PLAYER_TRADER_CONTAINER, PlayerTraderMenu::new);
+        MenuScreens.register(ModContainers.ALTAR_DOUBLE_CHEST_CONTAINER, AltarDoubleChestScreen::new);
     }
 }

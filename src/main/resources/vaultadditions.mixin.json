@@ -27,6 +27,7 @@
     "sophisticatedcore.MixinCompactingUpgradeWrapper",
     "sophisticatedcore.MixinInventoryHandlerExtract",
     "accessors.AccessorAttributeSnapshot",
+    "accessors.AccessorSlotPosition",
     "accessors.InvokeAttributeSnapshotAttributeValue",
     "additional_gear_cores.MixinAnvilRecipes",
     "additional_gear_cores.MixinRepairGearAnvilRecipe",
@@ -77,6 +78,7 @@
   "refmap": "vaultadditions.mixin-refmap.json",
   "client": [
     "MixinCombatStatsContainerElement",
+    "altar_chest.MixinVaultChestRenderer",
     "armor_effects.MixinElytraLayer",
     "armor_effects.sound.AccessorAbstractSoundInstance",
     "armor_effects.sound.MixinLocalPlayer",

@@ -140,7 +140,7 @@ repositories {
     mavenCentral()
 }
 
-def prismModsDir = file('C:/Users/HoYin1600p/AppData/Roaming/PrismLauncher/instances/NewPack Test/minecraft/mods')
+def prismModsDir = file(findProperty('prismModsDir') ?: "${System.getProperty('user.home')}/AppData/Roaming/PrismLauncher/instances/NewPack Test/minecraft/mods")
 def forgeGradleCacheDir = file("${gradle.gradleUserHomeDir}/caches/forge_gradle/deobf_dependencies")
 
 def parchmentMappedJarPatterns = { String... prefixes ->
