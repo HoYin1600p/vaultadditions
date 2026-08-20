@@ -26,6 +26,8 @@
     "cfm.MixinBlockEntityType",
     "sophisticatedcore.MixinCompactingUpgradeWrapper",
     "sophisticatedcore.MixinInventoryHandlerExtract",
+    "sophisticatedstorage.AccessorCompressionSlotDefinition",
+    "sophisticatedstorage.MixinCompressionInventoryPart",
     "accessors.AccessorAttributeSnapshot",
     "accessors.AccessorRaidSpawner",
     "accessors.AccessorSlotPosition",
