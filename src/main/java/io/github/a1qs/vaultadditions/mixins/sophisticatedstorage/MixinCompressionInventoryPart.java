@@ -48,6 +48,9 @@ public abstract class MixinCompressionInventoryPart {
     @Unique
     private long vaultadditions$lastInvalidStateWarning;
 
+    @Unique
+    private int vaultadditions$invalidDefinitionSlot = -1;
+
     @Inject(
             method = "updateSlotLimits(Ljava/util/Map;)V",
             at = @At("HEAD"),
@@ -91,7 +94,8 @@ public abstract class MixinCompressionInventoryPart {
         if (!(rawDefinition instanceof AccessorCompressionSlotDefinition definition)
                 || !definition.vaultadditions$isAccessible()
                 || definition.vaultadditions$getPrevSlotMultiplier() <= 0) {
-            throw new InvalidCompressionStateException(slot);
+            vaultadditions$invalidDefinitionSlot = slot;
+            throw new IllegalStateException("vaultadditions:invalid-compression-state");
         }
         return original.call(instance, slot);
     }
@@ -113,8 +117,12 @@ public abstract class MixinCompressionInventoryPart {
                 vaultadditions$refreshCalculatedSlots();
             }
             return result;
-        } catch (InvalidCompressionStateException exception) {
-            vaultadditions$warnInvalidState(slot, exception.slot);
+        } catch (IllegalStateException exception) {
+            if (!"vaultadditions:invalid-compression-state".equals(exception.getMessage())) {
+                throw exception;
+            }
+            vaultadditions$warnInvalidState(slot, vaultadditions$invalidDefinitionSlot);
+            vaultadditions$invalidDefinitionSlot = -1;
             return stack;
         }
     }
@@ -174,17 +182,4 @@ public abstract class MixinCompressionInventoryPart {
         );
     }
 
-    @Unique
-    private static final class InvalidCompressionStateException extends RuntimeException {
-        private final int slot;
-
-        private InvalidCompressionStateException(int slot) {
-            this.slot = slot;
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            return this;
-        }
-    }
 }
