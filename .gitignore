@@ -26,3 +26,6 @@ lib
 forge*changelog.txt
 
 libs
+
+# Local research and decompiled sources
+/me/
