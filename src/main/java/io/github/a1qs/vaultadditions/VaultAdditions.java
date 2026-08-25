@@ -43,6 +43,8 @@ public class VaultAdditions {
         ModItems.THE_VAULT_ITEMS.register(eventBus);
         ModBlocks.BLOCKS.register(eventBus);
         ModBlocks.THE_VAULT_BLOCKS.register(eventBus);
+        ModTreeFeatures.FEATURES.register(eventBus);
+        ModTreeFeatures.CONFIGURED_FEATURES.register(eventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(eventBus);
         ModParticles.PARTICLE_TYPES.register(eventBus);
         ModSounds.SOUNDS.register(eventBus);
@@ -64,7 +66,10 @@ public class VaultAdditions {
         ModModels.register();
         ModNetwork.initialize();
         VaultRegistry.OBJECTIVE.add(InfiniteRaidObjective.KEY);
-        event.enqueueWork(Ae2CuriosCompat::register);
+        event.enqueueWork(() -> {
+            ModBlocks.registerFlowerPots();
+            Ae2CuriosCompat.register();
+        });
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -82,6 +87,16 @@ public class VaultAdditions {
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.WENDARR_LEAVES.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENOS_LEAVES.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHROMATIC_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHROMATIC_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.IDONA_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENOS_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.VELARA_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WENDARR_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_CHROMATIC_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_IDONA_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_TENOS_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_VELARA_SAPLING.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.POTTED_WENDARR_SAPLING.get(), RenderType.cutout());
         LOGGER.info("Registered VaultAdditions Block Entity Renderers");
     }
 

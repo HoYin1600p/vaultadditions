@@ -75,6 +75,11 @@
   "block.the_vault.wendarr_planks": "Wendarr Planks",
   "block.the_vault.tenos_leaves": "Tenos Leaves",
   "block.the_vault.chromatic_leaves": "Chromatic Leaves",
+  "block.the_vault.chromatic_sapling": "Chromatic Sapling",
+  "block.the_vault.idona_sapling": "Idona Sapling",
+  "block.the_vault.tenos_sapling": "Tenos Sapling",
+  "block.the_vault.velara_sapling": "Velara Sapling",
+  "block.the_vault.wendarr_sapling": "Wendarr Sapling",
 
   "item.vaultadditions.power_crystal": "Power Crystal",
   "item.vaultadditions.power_orb": "Power Orb",

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "the_vault:chromatic_sapling",
+    "the_vault:idona_sapling",
+    "the_vault:tenos_sapling",
+    "the_vault:velara_sapling",
+    "the_vault:wendarr_sapling"
+  ]
+}

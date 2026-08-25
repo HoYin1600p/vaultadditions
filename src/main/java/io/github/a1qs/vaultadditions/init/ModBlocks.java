@@ -2,6 +2,7 @@ package io.github.a1qs.vaultadditions.init;
 
 import io.github.a1qs.vaultadditions.VaultAdditions;
 import io.github.a1qs.vaultadditions.block.*;
+import io.github.a1qs.vaultadditions.block.grower.StructureTreeGrower;
 import iskallia.vault.block.PillarBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -107,6 +108,37 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CHROMATIC_LEAVES = registerTheVaultBlock("chromatic_leaves",
             () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)), true);
+
+    public static final RegistryObject<Block> CHROMATIC_SAPLING = registerTheVaultBlock("chromatic_sapling",
+            () -> new SaplingBlock(new StructureTreeGrower(ModTreeFeatures.CHROMATIC_TREE),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), true);
+
+    public static final RegistryObject<Block> IDONA_SAPLING = registerTheVaultBlock("idona_sapling",
+            () -> new SaplingBlock(new StructureTreeGrower(ModTreeFeatures.IDONA_TREE),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), true);
+
+    public static final RegistryObject<Block> TENOS_SAPLING = registerTheVaultBlock("tenos_sapling",
+            () -> new SaplingBlock(new StructureTreeGrower(ModTreeFeatures.TENOS_TREE),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), true);
+
+    public static final RegistryObject<Block> VELARA_SAPLING = registerTheVaultBlock("velara_sapling",
+            () -> new SaplingBlock(new StructureTreeGrower(ModTreeFeatures.VELARA_TREE),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), true);
+
+    public static final RegistryObject<Block> WENDARR_SAPLING = registerTheVaultBlock("wendarr_sapling",
+            () -> new SaplingBlock(new StructureTreeGrower(ModTreeFeatures.WENDARR_TREE),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), true);
+
+    public static final RegistryObject<Block> POTTED_CHROMATIC_SAPLING = registerPottedSapling(
+            "potted_chromatic_sapling", CHROMATIC_SAPLING);
+    public static final RegistryObject<Block> POTTED_IDONA_SAPLING = registerPottedSapling(
+            "potted_idona_sapling", IDONA_SAPLING);
+    public static final RegistryObject<Block> POTTED_TENOS_SAPLING = registerPottedSapling(
+            "potted_tenos_sapling", TENOS_SAPLING);
+    public static final RegistryObject<Block> POTTED_VELARA_SAPLING = registerPottedSapling(
+            "potted_velara_sapling", VELARA_SAPLING);
+    public static final RegistryObject<Block> POTTED_WENDARR_SAPLING = registerPottedSapling(
+            "potted_wendarr_sapling", WENDARR_SAPLING);
 
 
     public static final RegistryObject<Block> CUT_CALCITE_BRICKS = registerBlock("cut_calcite_bricks_mimic",
@@ -258,6 +290,21 @@ public class ModBlocks {
                                                                                    CreativeModeTab tab) {
         return ModItems.THE_VAULT_ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(tab)));
+    }
+
+    private static RegistryObject<Block> registerPottedSapling(String name, RegistryObject<Block> sapling) {
+        return registerTheVaultBlock(name,
+                () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, sapling,
+                        BlockBehaviour.Properties.copy(Blocks.POTTED_OAK_SAPLING)), false);
+    }
+
+    public static void registerFlowerPots() {
+        FlowerPotBlock flowerPot = (FlowerPotBlock) Blocks.FLOWER_POT;
+        flowerPot.addPlant(CHROMATIC_SAPLING.getId(), POTTED_CHROMATIC_SAPLING);
+        flowerPot.addPlant(IDONA_SAPLING.getId(), POTTED_IDONA_SAPLING);
+        flowerPot.addPlant(TENOS_SAPLING.getId(), POTTED_TENOS_SAPLING);
+        flowerPot.addPlant(VELARA_SAPLING.getId(), POTTED_VELARA_SAPLING);
+        flowerPot.addPlant(WENDARR_SAPLING.getId(), POTTED_WENDARR_SAPLING);
     }
 
 
