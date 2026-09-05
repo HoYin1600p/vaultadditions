@@ -68,6 +68,8 @@
     "power_crystals.border.MixinVirtualWorlds",
     "raid_room.MixinBellBlock",
     "raid_plaques.MixinRaidCrystalObjective",
+    "rune_boss.AccessorBossRunePillarConfig",
+    "rune_boss.MixinBossRunePillarTileEntity",
     "registry.MixinAbilitiesConfig",
     "registry.MixinModAbilityLabelBindings",
     "registry.MixinModConfigs",
