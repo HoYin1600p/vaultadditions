@@ -29,3 +29,6 @@ libs
 
 # Local research and decompiled sources
 /me/
+
+# Local public-identity scan checkpoints
+/.identity-scan/

@@ -192,7 +192,8 @@ public class TransmogEffectsConfig extends Config {
         migrateFallDamageReductionBonus(ModModels.Armor.VIKING.getModel(), 0.25F);
         migrateFallDamageReductionBonus(ModModels.Armor.CELESTIAL.getModel(), 0.25F);
         migrateFallDamageReductionBonus(ModModels.Armor.SPACE_MARINE.getModel(), 0.25F);
-        migrateHoyArchonRadiusBonus(2.0F);
+        migrateArchonRadiusBonuses(ModModels.HOKAGE_ARMOR, 2.0F);
+        migrateArchonRadiusBonuses(ModModels.HOY_ARMOR, 2.0F);
         migrateVikingBonuses();
         migrateSpaceMarineBonuses();
         migrateDarkestBonuses();
@@ -637,8 +638,8 @@ public class TransmogEffectsConfig extends Config {
         return abilityId.equals(abilityLevelAttribute.getAbility()) && abilityLevelAttribute.getLevelChange() == levelChange;
     }
 
-    private void migrateHoyArchonRadiusBonus(float radius) {
-        for (ArmorModel model : ModModels.HOY_ARMOR) {
+    private void migrateArchonRadiusBonuses(Iterable<ArmorModel> models, float radius) {
+        for (ArmorModel model : models) {
             List<TransmogEffect> effects = new ArrayList<>(this.effects.getOrDefault(model, List.of()));
             boolean hasArchonRadiusBonus = false;
 
@@ -677,6 +678,7 @@ public class TransmogEffectsConfig extends Config {
             effects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.KINETIC_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
             effects.add(new AttributeTransmogEffect<>(new VaultGearAttributeInstance<>(io.github.a1qs.vaultadditions.init.vault.ModGearAttributes.FALL_DAMAGE_REDUCTION_PERCENT, 0.25F)).serialize());
             effects.add(new VanillaAttributeArmorTransmogEffect<>(Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.MULTIPLY_BASE, 0.2F).serialize());
+            effects.add(new ArchonRadiusTransmogEffect(2.0F).serialize());
             effects.add(new AbilitySoundTransmogEffect(ModAbilities.SMITE_ARCHON, new SoundChoice(ModSounds.TIGER_ACTIVATE_ARCHON.get())).serialize());
             effects.add(new AbilitySoundTransmogEffect("Smite_Abstract", new SoundChoice(ModSounds.TIGER_ARCHON_BOLT.get())).serialize());
             effects.add(new AbilitySoundTransmogEffect(ModAbilities.DASH, new SoundChoice(ModSounds.TIGER_DASH.get())).serialize());
