@@ -60,7 +60,6 @@
     "oversized_chunks.VaultOreTileEntityMixin",
     "patreon.MixinCustomVaultGearModelRollRaritiesConfig",
     "patreon.MixinGearModelRollRaritiesConfig",
-    "patreon.MixinTransmogTableBlock",
     "power_crystals.MixinAttributeSnapshotCalculator",
     "power_crystals.MixinClassicLootLogic",
     "power_crystals.MixinSkillGates",
